@@ -33,6 +33,11 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
 const SECURE_COOKIE = process.env.NODE_ENV === "production" || !!process.env.RAILWAY_ENVIRONMENT;
 const MAX_MB = 10;
 const SESSION_DAYS = 7;
+/* New-booking email alerts via Resend (https://resend.com). Off unless RESEND_API_KEY is set. */
+const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
+const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "";
+const MAIL_FROM = process.env.MAIL_FROM || "Durian City Farm <onboarding@resend.dev>";
+const SITE_URL = (process.env.SITE_URL || "https://www.duriancityfarm.com").replace(/\/+$/, "");
 
 /* Must match book.html */
 const SLOT_HOURS = [9, 11, 13, 15, 17];
@@ -165,6 +170,59 @@ function checkBooking(b, avail) {
   return null;
 }
 
+function htmlEsc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+function fmtDate(d) {
+  const [y, m, day] = d.split("-").map(Number);
+  return `${day} ${["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m - 1]} ${y}`;
+}
+
+/* Email the farm about a new booking, with the receipt attached. Never throws. */
+async function notifyNewBooking(bk, receiptPath, receiptName) {
+  if (!RESEND_API_KEY || !NOTIFY_EMAIL) return;
+  try {
+    const rows = [
+      ["Reference", bk.ref],
+      ["Experience", PRODUCTS[bk.experience].name],
+      ["Date", fmtDate(bk.date)],
+      ["Time", SLOT_LABELS[bk.slot]],
+      ["Name", bk.name],
+      ["WhatsApp", bk.phone],
+      ["People", bk.people],
+      ["Deposit", "RM" + bk.deposit],
+      ...(bk.variety ? [["Durian", bk.variety + (bk.kg ? " · " + bk.kg + " kg" : "")]] : []),
+      ...(bk.notes ? [["Notes", bk.notes]] : []),
+    ];
+    const html =
+      `<p>New booking received. Please check the deposit receipt (attached) and confirm it in the admin page.</p>` +
+      `<table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px">` +
+      rows.map(([k, v]) => `<tr><td style="color:#6E6052">${htmlEsc(k)}</td><td><b>${htmlEsc(v)}</b></td></tr>`).join("") +
+      `</table><p><a href="${SITE_URL}/admin.html">Open bookings admin</a></p>`;
+    const text = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\nAdmin: ${SITE_URL}/admin.html`;
+    const attachments = [];
+    try {
+      const buf = await fs.promises.readFile(receiptPath);
+      if (buf.length <= 15 * 1024 * 1024) attachments.push({ filename: receiptName, content: buf.toString("base64") });
+    } catch {}
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: "Bearer " + RESEND_API_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: MAIL_FROM,
+        to: NOTIFY_EMAIL.split(",").map((s) => s.trim()).filter(Boolean),
+        subject: `New booking ${bk.ref}: ${PRODUCTS[bk.experience].name}, ${fmtDate(bk.date)} ${SLOT_LABELS[bk.slot]}`,
+        html, text, attachments,
+      }),
+      signal: AbortSignal.timeout(20000),
+    });
+    if (!r.ok) console.error(`[email] ${bk.ref} failed: ${r.status} ${(await r.text()).slice(0, 300)}`);
+    else console.log(`[email] ${bk.ref} sent to ${NOTIFY_EMAIL}`);
+  } catch (e) {
+    console.error(`[email] ${bk.ref} error: ${e.message}`);
+  }
+}
+
 function newRef() {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   for (;;) {
@@ -256,6 +314,9 @@ app.post("/api/bookings", (req, res) => {
         path.basename(req.file.path), req.file.mimetype, new Date().toISOString());
     console.log(`[booking] ${ref} ${b.experience} ${b.date} ${SLOT_LABELS[b.slot]} x${b.people}`);
     res.json({ ok: true, ref });
+    const ext = ALLOWED_TYPES[req.file.mimetype] || "";
+    notifyNewBooking({ ...b, ref, deposit: b.people * DEPOSIT_PER_PAX, variety: durian ? b.variety : "", kg: durian ? b.kg : "" },
+      req.file.path, `receipt-${ref}${ext}`);
   });
 });
 

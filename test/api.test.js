@@ -8,6 +8,15 @@ const path = require("node:path");
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "dcf-test-"));
 process.env.DATA_DIR = tmp;
 process.env.ADMIN_PASSWORD = "test-password";
+process.env.RESEND_API_KEY = "re_test";
+process.env.NOTIFY_EMAIL = "farm@example.com";
+/* Capture Resend calls instead of sending real email. */
+const sentEmails = [];
+const realFetch = globalThis.fetch;
+globalThis.fetch = (url, opt) => {
+  if (String(url).startsWith("https://api.resend.com/")) { sentEmails.push({ url: String(url), opt }); return Promise.resolve(new Response(JSON.stringify({ id: "x" }), { status: 200 })); }
+  return realFetch(url, opt);
+};
 const { app } = require("../server.js");
 
 let server, base, cookie = "";
@@ -61,6 +70,15 @@ test("accepts a valid booking", async () => {
   assert.equal(j.ok, true, JSON.stringify(j));
   assert.match(j.ref, /^DCF-[A-Z0-9]{6}$/);
   ref = j.ref;
+  await new Promise((r) => setTimeout(r, 200));
+  assert.equal(sentEmails.length, 1, "one alert email");
+  const mail = JSON.parse(sentEmails[0].opt.body);
+  assert.equal(sentEmails[0].opt.headers.Authorization, "Bearer re_test");
+  assert.deepEqual(mail.to, ["farm@example.com"]);
+  assert.ok(mail.subject.includes(ref));
+  assert.ok(mail.html.includes("Ali") && mail.html.includes("RM30"));
+  assert.equal(mail.attachments.length, 1);
+  assert.equal(mail.attachments[0].filename, "receipt-" + ref + ".jpg");
 });
 
 test("admin requires login", async () => {

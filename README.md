@@ -34,6 +34,10 @@ On Windows PowerShell, set the password with `$env:ADMIN_PASSWORD="choose-a-pass
 | `ADMIN_PASSWORD` | Yes | Password for `admin.html`. Without it the admin login is refused. |
 | `PORT` | No | Port to listen on (default 3000). Most hosts set this for you. |
 | `DATA_DIR` | No | Folder for the database and receipts (default `./data`). Point it at a persistent disk in production. |
+| `RESEND_API_KEY` | No | [Resend](https://resend.com) API key. When set with `NOTIFY_EMAIL`, each new booking is emailed to the farm with the receipt attached. |
+| `NOTIFY_EMAIL` | No | Where booking alerts go (comma-separate several addresses). |
+| `MAIL_FROM` | No | Sender, default `Durian City Farm <onboarding@resend.dev>`. Resend's test sender can only email the address the Resend account was signed up with; verify `duriancityfarm.com` in Resend to send from your own domain to anyone. |
+| `SITE_URL` | No | Public address used in the email's admin link (default `https://www.duriancityfarm.com`). |
 | `NODE_ENV` | No | Set to `production` so the admin cookie is only sent over HTTPS. |
 
 ## How booking works
