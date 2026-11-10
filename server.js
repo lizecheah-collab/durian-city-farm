@@ -25,11 +25,12 @@ const cookieParser = require("cookie-parser");
 
 /* ---------- config ---------- */
 const PORT = Number(process.env.PORT) || 3000;
-const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, "data"));
+/* On Railway, an attached volume's path is provided as RAILWAY_VOLUME_MOUNT_PATH. */
+const DATA_DIR = path.resolve(process.env.DATA_DIR || process.env.RAILWAY_VOLUME_MOUNT_PATH || path.join(__dirname, "data"));
 const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 const PUBLIC_DIR = path.join(__dirname, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
-const SECURE_COOKIE = process.env.NODE_ENV === "production";
+const SECURE_COOKIE = process.env.NODE_ENV === "production" || !!process.env.RAILWAY_ENVIRONMENT;
 const MAX_MB = 10;
 const SESSION_DAYS = 7;
 
@@ -186,6 +187,12 @@ app.use((req, res, next) => {
 });
 app.use(cookieParser());
 app.use("/api", express.json({ limit: "200kb" }));
+
+/* Health check for the host */
+app.get("/healthz", (req, res) => {
+  db.prepare("SELECT 1").get();
+  res.set("Cache-Control", "no-store").json({ ok: true });
+});
 
 /* Public availability */
 app.get("/api/availability", (req, res) => {

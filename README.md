@@ -45,7 +45,20 @@ On Windows PowerShell, set the password with `$env:ADMIN_PASSWORD="choose-a-pass
 
 ## Deploying
 
-GitHub Pages can't run this, since it only hosts static files. Use a Node host with a persistent disk, for example **Render** (Web Service with a Disk) or **Railway** (service with a Volume):
+GitHub Pages can't run this, since it only hosts static files. Use a Node host with a persistent disk.
+
+### Railway (set up for this repo)
+
+`railway.json` already sets the build, start command and health check (`/healthz`).
+
+1. In Railway, create a project with **Deploy from GitHub repo** and choose `durian-city-farm`.
+2. Right-click the service, choose **Attach volume**, and mount it at `/data`. The server finds it automatically through `RAILWAY_VOLUME_MOUNT_PATH`.
+3. Under **Variables**, add `ADMIN_PASSWORD`.
+4. Under **Settings → Networking**, click **Generate Domain**, or add your own domain.
+
+Every push to `main` redeploys the site.
+
+### Other hosts (e.g. Render)
 
 - Build command: `npm install`
 - Start command: `npm start`
