@@ -481,12 +481,20 @@ footer small a{white-space:nowrap}
 .merged-season{padding-top:0!important}
 .q-dots{display:none}
 .reviews .grid>div,.reviews .grid{min-width:0}
-@media (max-width:760px){.mosaic>.tile.unavailable{order:9}
+@media (max-width:760px){.mosaic>.tile.unavailable{order:9}}
 [hidden]{display:none!important}
 .tile:not(.unavailable) .st-off,.tile.unavailable .st-on{display:none}
 .tile .st-dine,.tile .st-take{display:none}
 .tile[data-mode=dine] .st-both,.tile[data-mode=take] .st-both{display:none}
-.tile[data-mode=dine] .st-dine,.tile[data-mode=take] .st-take{display:inline}}
+.tile[data-mode=dine] .st-dine,.tile[data-mode=take] .st-take{display:inline}
+/* Desktop: once live availability loads, open experiences come first; card shape follows position, not experience. */
+@media (min-width:761px){
+  .mosaic.live>.tile{grid-row:auto;grid-column:auto;min-height:clamp(260px,32vw,400px)}
+  .mosaic.live>.tile::after{background:linear-gradient(180deg,rgba(31,23,18,0) 20%,rgba(31,23,18,.55) 50%,rgba(31,23,18,.92) 92%)!important}
+  .mosaic.live>.tile.f-big{grid-row:span 2;min-height:clamp(420px,52vw,640px)}
+  .mosaic.live>.tile.f-wide{grid-column:1/-1;min-height:clamp(220px,24vw,300px)}
+  .mosaic.live>.tile.f-wide::after{background:linear-gradient(90deg,rgba(31,23,18,.9) 0%,rgba(31,23,18,.6) 40%,rgba(31,23,18,0) 75%)!important}
+}
 section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,section.wrap.stay,section.wrap.work{padding-left:clamp(1.25rem,5vw,3.5rem)!important;padding-right:clamp(1.25rem,5vw,3.5rem)!important}
 .nature .wrap>*,.experiences-wrap{min-width:0}
 @media (max-width:760px){
@@ -953,6 +961,18 @@ if ("IntersectionObserver" in window) {
       else { t.dataset.msg = t.dataset.offmsg; }
       if (t.dataset.prod === "durian") t.dataset.mode = dine && take ? "both" : dine ? "dine" : take ? "take" : "";
     });
+    var mosaic = document.querySelector(".mosaic");
+    if (mosaic) {
+      var tiles = [].slice.call(mosaic.querySelectorAll(":scope>.tile[data-prod]"));
+      tiles.filter(function(t){ return !t.classList.contains("unavailable"); })
+        .concat(tiles.filter(function(t){ return t.classList.contains("unavailable"); }))
+        .forEach(function(t, i, all){
+          mosaic.appendChild(t);
+          t.classList.toggle("f-big", i === 0);
+          t.classList.toggle("f-wide", all.length === 4 && i === 3);
+        });
+      mosaic.classList.add("live");
+    }
     document.querySelectorAll("li[data-prod]").forEach(function(li){ li.hidden = !isOn(li.dataset.prod); });
     document.querySelectorAll("[data-var-off]").forEach(function(el){ el.hidden = voff.indexOf(el.dataset.varOff) < 0; });
     document.querySelectorAll("[data-var-on]").forEach(function(el){ el.hidden = voff.indexOf(el.dataset.varOn) > -1; });
