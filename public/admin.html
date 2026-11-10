@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin | Durian City Farm</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--night:#1F1712;--brass:#B48C57;--cream:#EFE6D8;--muted:#B9AA97;--line:rgba(239,230,216,.16);--glass:rgba(239,230,216,.05);--ok:#8FB07A;--warn:#C98A5A;--bad:#C96F5A;
+  --serif:"Crimson Pro",Georgia,serif;--sans:"Jost",system-ui,-apple-system,sans-serif;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--night);color:var(--cream);font-family:var(--sans);font-weight:300;line-height:1.55}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:inherit}
+.wrap{max-width:1100px;margin:0 auto;padding:0 1.1rem}
+header{position:sticky;top:0;z-index:5;background:rgba(31,23,18,.95);border-bottom:1px solid var(--line)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:1rem;min-height:64px;flex-wrap:wrap}
+header h1{font-family:var(--serif);font-weight:400;font-size:1.3rem;margin:0}
+header h1 small{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--brass)}
+.btn{border:1px solid var(--line);background:none;border-radius:999px;padding:.5rem 1rem;cursor:pointer;font-size:.88rem;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+.btn:hover{border-color:var(--cream)}
+.btn.primary{background:var(--brass);border-color:var(--brass);color:var(--night);font-weight:500}
+.tabs{display:flex;gap:.4rem;margin:1.2rem 0}
+.tabs button{border:1px solid var(--line);background:none;border-radius:999px;padding:.5rem 1.1rem;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--cream);color:var(--night)}
+.login{max-width:360px;margin:15vh auto;padding:1.6rem;border:1px solid var(--line);border-radius:14px;background:var(--glass)}
+.login h2{font-family:var(--serif);font-weight:400;margin:0 0 1rem}
+input[type=password],input[type=text],input[type=search],input[type=date],select{width:100%;background:rgba(239,230,216,.06);border:1px solid var(--line);border-radius:8px;padding:.6rem .75rem;color-scheme:dark}
+select option{background:#2A1F18}
+.err{color:var(--bad);font-size:.88rem;min-height:1.3em;margin:.5rem 0}
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-bottom:1rem}
+.filters input[type=search]{flex:1;min-width:180px}
+.filters select{width:auto}
+.count{color:var(--muted);font-size:.85rem;margin:0 0 .8rem}
+.list{display:grid;gap:.7rem;padding-bottom:3rem}
+.card{border:1px solid var(--line);border-radius:12px;background:var(--glass);padding:1rem 1.1rem;display:grid;grid-template-columns:1fr auto;gap:.6rem 1rem}
+.card .ref{font-weight:500;letter-spacing:.04em}
+.card .when{font-family:var(--serif);font-size:1.25rem}
+.card dl{margin:.3rem 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.3rem 1rem;font-size:.88rem}
+.card dt{font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.card dd{margin:0;overflow-wrap:anywhere}
+.card .side{display:flex;flex-direction:column;gap:.4rem;align-items:flex-end}
+.card .side select{width:auto}
+.pill{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;border-radius:999px;padding:.2rem .6rem;border:1px solid}
+.pill.pending{color:var(--warn)}.pill.confirmed{color:var(--ok)}.pill.cancelled{color:var(--bad)}.pill.completed{color:var(--muted)}
+.card .note{grid-column:1/-1;display:flex;gap:.5rem}
+.card .note input{flex:1}
+@media (max-width:640px){.card{grid-template-columns:1fr}.card .side{align-items:flex-start;flex-direction:row;flex-wrap:wrap}}
+.panel{border:1px solid var(--line);border-radius:12px;background:var(--glass);padding:1.1rem;margin-bottom:.9rem}
+.panel h3{font-family:var(--serif);font-weight:400;font-size:1.25rem;margin:0 0 .6rem}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.tg{border:1px solid rgba(143,176,122,.6);background:rgba(143,176,122,.1);border-radius:10px;padding:.45rem .75rem;cursor:pointer;font-size:.86rem}
+.tg[aria-pressed="false"]{border-color:rgba(201,138,90,.7);background:rgba(201,138,90,.14)}
+.mchip{border:1px solid var(--line);background:none;border-radius:6px;padding:.35rem .55rem;cursor:pointer;font-size:.82rem}
+.mchip[aria-pressed="true"]{background:var(--brass);border-color:var(--brass);color:var(--night)}
+.row{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.5rem 0}
+.row input[type=date]{width:auto}
+.mk{display:inline-flex;align-items:center;gap:.3rem;border:1px solid var(--line);border-radius:999px;padding:.2rem .3rem .2rem .7rem;font-size:.82rem}
+.mk button{border:0;background:rgba(239,230,216,.1);border-radius:50%;width:22px;height:22px;cursor:pointer}
+.slot{border:1px solid rgba(143,176,122,.6);background:rgba(143,176,122,.1);border-radius:8px;padding:.4rem .7rem;cursor:pointer;font-size:.85rem}
+.slot[aria-pressed="true"]{border-color:rgba(201,138,90,.7);background:rgba(201,138,90,.14)}
+.hint{color:var(--muted);font-size:.85rem;margin:.2rem 0 .6rem}
+.saved{color:var(--ok);font-size:.88rem;margin-left:.5rem}
+.save-bar{padding-bottom:3rem}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1><small>Durian City Farm</small>Bookings admin</h1><div id="hdr-actions" hidden><a class="btn" href="/api/admin/export.csv">Export CSV</a> <button class="btn" id="logout">Log out</button></div></div></header>
+
+<section class="login" id="login" hidden>
+  <h2>Admin login</h2>
+  <form id="login-form"><label for="pw" class="hint">Password</label><input type="password" id="pw" autocomplete="current-password" required>
+  <p class="err" id="login-err"></p><button class="btn primary" type="submit">Log in</button></form>
+</section>
+
+<main class="wrap" id="app" hidden>
+  <div class="tabs" role="tablist"><button role="tab" data-tab="bookings" aria-selected="true">Bookings</button><button role="tab" data-tab="avail" aria-selected="false">Availability</button></div>
+
+  <section id="tab-bookings">
+    <div class="filters">
+      <input type="search" id="q" placeholder="Search name, phone or reference">
+      <select id="status"><option value="all">All statuses</option><option value="pending" selected>Pending (check deposit)</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option></select>
+      <select id="when"><option value="1">Upcoming</option><option value="0">All dates</option></select>
+      <button class="btn" id="refresh">Refresh</button>
+    </div>
+    <p class="count" id="count"></p>
+    <div class="list" id="list"></div>
+  </section>
+
+  <section id="tab-avail" hidden>
+    <div class="panel"><h3>Products &amp; varieties</h3><p class="hint">Tap to switch between available (green) and closed (orange).</p><div class="chips" id="prods"></div></div>
+    <div class="panel"><h3>Bookings open from</h3><input type="date" id="openFrom" style="width:auto"></div>
+    <div class="panel"><h3>Durian season months</h3><div class="chips" id="months"></div></div>
+    <div class="panel"><h3>Fully booked / closed dates</h3>
+      <div class="row"><input type="date" id="dayDate"><button class="btn" id="addFull">Mark fully booked</button><button class="btn" id="addClosed">Mark closed</button></div>
+      <p class="hint">Fully booked</p><div class="chips" id="fullList"></div>
+      <p class="hint" style="margin-top:.8rem">Closed</p><div class="chips" id="closedList"></div></div>
+    <div class="panel"><h3>Close time slots</h3>
+      <div class="row"><input type="date" id="slotDate"></div><div class="chips" id="slotBtns"></div>
+      <p class="hint" style="margin-top:.8rem">Dates with closed slots</p><div class="chips" id="slotList"></div></div>
+    <div class="save-bar"><button class="btn primary" id="saveAvail">Save availability</button><span class="saved" id="savedMsg"></span></div>
+  </section>
+</main>
+
+<script>
+(function(){
+var MONTHS=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var S={slots:[],products:{},varieties:[],avail:null};
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
+function api(path,opt){ return fetch(path,Object.assign({credentials:"same-origin",headers:{"Content-Type":"application/json"}},opt||{})).then(function(r){ if(r.status===401){ showLogin(); throw new Error("login"); } return r.json(); }); }
+function fmt(d){ var p=d.split("-"); return Number(p[2])+" "+MONTHS[Number(p[1])-1]+" "+p[0]; }
+function showLogin(){ $("login").hidden=false; $("app").hidden=true; $("hdr-actions").hidden=true; }
+function showApp(){ $("login").hidden=true; $("app").hidden=false; $("hdr-actions").hidden=false; loadBookings(); loadAvail(); }
+
+$("login-form").onsubmit=function(e){ e.preventDefault(); $("login-err").textContent="";
+  fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:$("pw").value})})
+  .then(function(r){ return r.json().then(function(j){ return [r.status,j]; }); })
+  .then(function(x){ if(x[1].ok){ $("pw").value=""; showApp(); } else $("login-err").textContent = x[0]===429?"Too many attempts. Please wait 15 minutes.": x[1].error==="admin_not_configured"?"Set ADMIN_PASSWORD on the server first.":"Wrong password."; }); };
+$("logout").onclick=function(){ fetch("/api/admin/logout",{method:"POST"}).then(showLogin); };
+document.querySelectorAll(".tabs button").forEach(function(b){ b.onclick=function(){ document.querySelectorAll(".tabs button").forEach(function(x){ x.setAttribute("aria-selected", x===b); }); $("tab-bookings").hidden=b.dataset.tab!=="bookings"; $("tab-avail").hidden=b.dataset.tab!=="avail"; }; });
+
+/* ---------- bookings ---------- */
+function loadBookings(){
+  var qs="?status="+encodeURIComponent($("status").value)+"&upcoming="+$("when").value+"&q="+encodeURIComponent($("q").value);
+  api("/api/admin/bookings"+qs).then(function(j){
+    S.slots=j.slots; S.products=j.products;
+    $("count").textContent=j.bookings.length+" booking"+(j.bookings.length===1?"":"s");
+    $("list").innerHTML=j.bookings.map(card).join("") || '<p class="hint">No bookings match.</p>';
+    $("list").querySelectorAll("select[data-ref]").forEach(function(s){ s.onchange=function(){ api("/api/admin/bookings/"+s.dataset.ref,{method:"POST",body:JSON.stringify({status:s.value})}).then(loadBookings); }; });
+    $("list").querySelectorAll("button[data-note]").forEach(function(b){ b.onclick=function(){ var inp=document.getElementById("note-"+b.dataset.note); api("/api/admin/bookings/"+b.dataset.note,{method:"POST",body:JSON.stringify({admin_note:inp.value})}).then(function(){ b.textContent="Saved"; setTimeout(function(){ b.textContent="Save note"; },1500); }); }; });
+  }).catch(function(){});
+}
+function card(b){
+  var prod=(S.products[b.experience]||{}).name||b.experience;
+  var digits=String(b.phone).replace(/\D/g,""); if (digits.charAt(0)==="0") digits="6"+digits;
+  var wa="https://wa.me/"+digits;
+  var waMsg=encodeURIComponent("Hi "+b.name+", this is Durian City Farm. Your booking "+b.ref+" on "+fmt(b.date)+" at "+S.slots[b.slot]+" is confirmed. See you at the farm!");
+  return '<article class="card"><div><span class="pill '+b.status+'">'+b.status+'</span> <span class="ref">'+esc(b.ref)+'</span>'+
+    '<div class="when">'+fmt(b.date)+' · '+esc(S.slots[b.slot])+'</div>'+
+    '<dl><div><dt>Experience</dt><dd>'+esc(prod)+'</dd></div><div><dt>Name</dt><dd>'+esc(b.name)+'</dd></div><div><dt>WhatsApp</dt><dd><a href="'+wa+'" target="_blank" rel="noopener">'+esc(b.phone)+'</a></dd></div>'+
+    '<div><dt>People</dt><dd>'+b.people+'</dd></div><div><dt>Deposit</dt><dd>RM'+b.deposit+'</dd></div>'+
+    (b.variety?'<div><dt>Durian</dt><dd>'+esc(b.variety)+(b.kg?' · '+esc(b.kg)+' kg':'')+'</dd></div>':'')+
+    (b.notes?'<div style="grid-column:1/-1"><dt>Notes</dt><dd>'+esc(b.notes)+'</dd></div>':'')+
+    '<div><dt>Received</dt><dd>'+new Date(b.created_at).toLocaleString()+'</dd></div></dl></div>'+
+    '<div class="side"><a class="btn" href="/api/admin/bookings/'+encodeURIComponent(b.ref)+'/receipt" target="_blank" rel="noopener">View receipt</a>'+
+    '<select data-ref="'+esc(b.ref)+'" aria-label="Status">'+["pending","confirmed","completed","cancelled"].map(function(s){ return '<option'+(s===b.status?' selected':'')+'>'+s+'</option>'; }).join("")+'</select>'+
+    '<a class="btn" href="'+wa+'?text='+waMsg+'" target="_blank" rel="noopener">WhatsApp confirmation</a></div>'+
+    '<div class="note"><input type="text" id="note-'+esc(b.ref)+'" placeholder="Private note" value="'+esc(b.admin_note||"")+'"><button class="btn" data-note="'+esc(b.ref)+'">Save note</button></div></article>';
+}
+["status","when"].forEach(function(id){ $(id).onchange=loadBookings; });
+$("refresh").onclick=loadBookings;
+var qT; $("q").oninput=function(){ clearTimeout(qT); qT=setTimeout(loadBookings,300); };
+
+/* ---------- availability ---------- */
+function loadAvail(){ api("/api/admin/availability").then(function(j){ S.avail=j.availability; S.products=j.products; S.varieties=j.varieties; S.slots=j.slots; renderAvail(); }).catch(function(){}); }
+function toggle(list,v){ var i=list.indexOf(v); if(i>-1) list.splice(i,1); else list.push(v); }
+function renderAvail(){
+  var a=S.avail; if(!a) return;
+  $("prods").innerHTML=Object.keys(S.products).map(function(k){ return '<button class="tg" data-p="'+k+'" aria-pressed="'+(a.productsOff.indexOf(k)<0)+'">'+esc(S.products[k].name)+'</button>'; }).join("")+
+    S.varieties.map(function(v){ return '<button class="tg" data-v="'+esc(v)+'" aria-pressed="'+(a.varietiesOff.indexOf(v)<0)+'">'+esc(v)+'</button>'; }).join("");
+  $("prods").querySelectorAll(".tg").forEach(function(b){ b.onclick=function(){ toggle(b.dataset.p?a.productsOff:a.varietiesOff, b.dataset.p||b.dataset.v); renderAvail(); }; });
+  $("openFrom").value=a.openFrom; $("openFrom").onchange=function(){ a.openFrom=this.value; };
+  $("months").innerHTML=MONTHS.map(function(m,i){ return '<button class="mchip" data-i="'+i+'" aria-pressed="'+(a.seasonMonths.indexOf(i)>-1)+'">'+m+'</button>'; }).join("");
+  $("months").querySelectorAll(".mchip").forEach(function(b){ b.onclick=function(){ toggle(a.seasonMonths,+b.dataset.i); a.seasonMonths.sort(function(x,y){return x-y;}); renderAvail(); }; });
+  function list(arr,kind){ return arr.slice().sort().map(function(d){ return '<span class="mk">'+fmt(d)+'<button data-kind="'+kind+'" data-d="'+d+'" aria-label="Remove">×</button></span>'; }).join("")||'<span class="hint">None</span>'; }
+  $("fullList").innerHTML=list(a.full,"full"); $("closedList").innerHTML=list(a.closed,"closed");
+  $("slotList").innerHTML=Object.keys(a.slotsOff).sort().map(function(d){ return '<span class="mk">'+fmt(d)+' · '+a.slotsOff[d].map(function(i){return S.slots[i];}).join(", ")+'<button data-kind="slots" data-d="'+d+'" aria-label="Remove">×</button></span>'; }).join("")||'<span class="hint">None</span>';
+  document.querySelectorAll(".mk button").forEach(function(b){ b.onclick=function(){ if(b.dataset.kind==="slots") delete a.slotsOff[b.dataset.d]; else toggle(a[b.dataset.kind],b.dataset.d); renderAvail(); }; });
+  var sd=$("slotDate").value, off=a.slotsOff[sd]||[];
+  $("slotBtns").innerHTML=sd?S.slots.map(function(l,i){ var c=off.indexOf(i)>-1; return '<button class="slot" data-i="'+i+'" aria-pressed="'+c+'">'+l+' · '+(c?"closed":"open")+'</button>'; }).join(""):'<span class="hint">Choose a date to open or close its time slots.</span>';
+  $("slotBtns").querySelectorAll(".slot").forEach(function(b){ b.onclick=function(){ var arr=a.slotsOff[sd]||[]; toggle(arr,+b.dataset.i); arr.sort(); if(arr.length) a.slotsOff[sd]=arr; else delete a.slotsOff[sd]; renderAvail(); }; });
+}
+$("slotDate").onchange=renderAvail;
+$("addFull").onclick=function(){ var d=$("dayDate").value; if(!d) return; var a=S.avail; a.closed=a.closed.filter(function(x){return x!==d;}); if(a.full.indexOf(d)<0) a.full.push(d); renderAvail(); };
+$("addClosed").onclick=function(){ var d=$("dayDate").value; if(!d) return; var a=S.avail; a.full=a.full.filter(function(x){return x!==d;}); if(a.closed.indexOf(d)<0) a.closed.push(d); renderAvail(); };
+$("saveAvail").onclick=function(){ api("/api/admin/availability",{method:"POST",body:JSON.stringify(S.avail)}).then(function(j){ if(j.ok){ S.avail=j.availability; renderAvail(); $("savedMsg").textContent="Saved. Visitors see the update straight away."; setTimeout(function(){ $("savedMsg").textContent=""; },3000); } }); };
+
+fetch("/api/admin/me",{credentials:"same-origin"}).then(function(r){ if(r.ok) showApp(); else showLogin(); }).catch(showLogin);
+})();
+</script>
+</body>
+</html>

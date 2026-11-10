@@ -1,0 +1,20 @@
+{
+  "name": "durian-city-farm",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Durian City Farm website with booking and admin backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.22.3",
+    "multer": "^2.5.0"
+  }
+}
