@@ -128,3 +128,14 @@ test("logout ends session", async () => {
   await admin("/api/admin/logout", { method: "POST" });
   assert.equal((await admin("/api/admin/me")).status, 401);
 });
+
+test("farm.duriancityfarm.com serves the farm records page", async () => {
+  const farm = await fetch(base + "/", { headers: { "X-Forwarded-Host": "farm.duriancityfarm.com" } });
+  assert.equal(farm.status, 200);
+  assert.ok((await farm.text()).includes("script.google.com/macros/s/"));
+  const other = await fetch(base + "/book", { headers: { "X-Forwarded-Host": "farm.duriancityfarm.com" }, redirect: "manual" });
+  assert.equal(other.status, 302);
+  const www = await fetch(base + "/");
+  assert.ok(!(await www.text()).includes("script.google.com/macros/s/"));
+  assert.equal((await fetch(base + "/farm")).status, 200);
+});

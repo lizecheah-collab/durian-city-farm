@@ -419,6 +419,13 @@ app.post("/api/admin/availability", requireAdmin, (req, res) => {
 app.use("/api", (req, res) => res.status(404).json({ ok: false, error: "not_found" }));
 
 /* ---------- static site ---------- */
+/* farm.duriancityfarm.com shows only the farm records dashboard (public/farm.html) */
+const FARM_HOST = "farm.duriancityfarm.com";
+app.use((req, res, next) => {
+  if (req.hostname !== FARM_HOST) return next();
+  if (req.path === "/" || req.path === "/farm" || req.path === "/farm.html") return res.sendFile(path.join(PUBLIC_DIR, "farm.html"));
+  return res.redirect(302, "/");
+});
 app.use(express.static(PUBLIC_DIR, { extensions: ["html"], maxAge: "1h" }));
 app.use((req, res) => res.status(404).sendFile(path.join(PUBLIC_DIR, "index.html")));
 
