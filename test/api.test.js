@@ -139,3 +139,18 @@ test("farm.duriancityfarm.com serves the farm records page", async () => {
   assert.ok(!(await www.text()).includes("script.google.com/macros/s/"));
   assert.equal((await fetch(base + "/farm")).status, 200);
 });
+
+test("farm page is installable (manifest, icons, service worker)", async () => {
+  const html = await (await fetch(base + "/farm")).text();
+  assert.ok(html.includes('rel="manifest" href="/farm.webmanifest"'));
+  const m = await fetch(base + "/farm.webmanifest");
+  assert.equal(m.status, 200);
+  assert.ok(["manifest+json", "application/json"].some((x) => m.headers.get("content-type").includes(x)), m.headers.get("content-type"));
+  const man = await m.json();
+  assert.equal(man.start_url, "/farm");
+  assert.equal(man.display, "standalone");
+  for (const i of man.icons) { const r = await fetch(base + i.src); assert.equal(r.status, 200, i.src); assert.equal(r.headers.get("content-type"), "image/png"); }
+  const sw = await fetch(base + "/farm-sw.js");
+  assert.equal(sw.status, 200);
+  assert.match(sw.headers.get("content-type"), /javascript/);
+});

@@ -1,0 +1,17 @@
+{
+  "name": "Durian City Farm – Farm records",
+  "short_name": "DCF Farm",
+  "description": "Flowering, harvest, soil pH, farm work and sales records for Durian City Farm, Seri Alam.",
+  "id": "/farm",
+  "start_url": "/farm",
+  "scope": "/farm",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1F1712",
+  "theme_color": "#1F1712",
+  "icons": [
+    {"src": "/icons/farm-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/icons/farm-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/icons/farm-icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
