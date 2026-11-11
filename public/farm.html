@@ -6,7 +6,6 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#1F1712">
 <title>Farm records · Durian City Farm</title>
-<link rel="manifest" href="/farm.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/farm-icon-192.png">
 <link rel="apple-touch-icon" href="/icons/farm-apple-touch-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,8 +25,9 @@
         title="Durian City Farm – farm records" allow="clipboard-write"></iframe>
 <noscript>Farm records need JavaScript. <a href="https://script.google.com/macros/s/AKfycbxr7o2cQI8lcbdGRs0OtaCxl07vj8FUJl1fcjjVde3ZCr85j5hdfKI4mavQd1ZRXAQL/exec">Open them directly</a>.</noscript>
 <script>
-  // lets phones offer "Install app" / "Add to Home Screen" for /farm
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/farm-sw.js', { scope: '/farm' }).catch(function () {});
+  // /farm is a plain home-screen shortcut (like class.pinetreelearninghub.com), not an installed app:
+  // remove the app helper that earlier versions registered on phones.
+  if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { if (r.scope.indexOf("/farm") !== -1) r.unregister(); }); }).catch(function () {});
 </script>
 </body>
 </html>
