@@ -206,6 +206,8 @@ button{font:inherit;color:inherit}
 .pay-grid.locked{filter:grayscale(1) blur(7px);opacity:.35;pointer-events:none;user-select:none;-webkit-user-select:none}
 .pay-lock{margin:1rem 0 0;padding:.75rem 1rem;border:1px dashed rgba(180,140,87,.7);border-radius:10px;background:rgba(180,140,87,.08);font-size:.92rem;color:var(--cream)}
 .pay-lock[hidden]{display:none}
+.fields.locked{opacity:.4;filter:grayscale(1);pointer-events:none;user-select:none;-webkit-user-select:none}
+#fields-lock{margin:0 0 1rem}
 .drop.locked,.drop.locked:hover{opacity:.45;filter:grayscale(1);cursor:not-allowed;background:rgba(180,140,87,.07);border-color:rgba(180,140,87,.7)}
 .drop input,.up-btn input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 .drop:focus-within{outline:2px solid var(--brass);outline-offset:3px}
@@ -419,7 +421,7 @@ var T = {
   qrLabel:"Scan with any Malaysian banking or e-wallet app. On your phone? Take a screenshot and upload it in your banking app.",orBank:"Or pay by bank transfer",bank:"Bank",acc:"Account number",holder:"Account name",copy:"Copy",copied:"Copied",
   ref:"Payment reference: your name and booking date",receipt:"Remember to attach your payment receipt in WhatsApp.",
   mPay:"Payment: I’ll send the deposit receipt in this chat.",formBtn:"Submit booking & upload receipt",formNote:"Tapping this copies your booking details and opens our booking form. Paste the details into the form, add your WhatsApp number and upload your payment receipt.",autoCopied:"✓ Booking details copied. Paste them into the form (press and hold → Paste).",copyDetails:"Copy booking details",copiedDetails:"Booking details copied",waAlt:"Or send your booking on WhatsApp",payment:"Payment",
-  upTitle:"Upload payment receipt",upHint:"Tap to choose a photo or PDF of your receipt",upLocked:"Choose an experience, date and time first, then upload your receipt here.",payLocked:"Choose an experience, date and time above first. The payment details will appear here once your slot is confirmed open.",upMax:"Image or PDF, max 10 MB",upChange:"Change",upRemove:"Remove",
+  upTitle:"Upload payment receipt",upHint:"Tap to choose a photo or PDF of your receipt",upLocked:"Choose an experience, date and time first, then upload your receipt here.",detailsLocked:"Choose an experience, date and time above first, then fill in your details.",payLocked:"Choose an experience, date and time above first. The payment details will appear here once your slot is confirmed open.",upMax:"Image or PDF, max 10 MB",upChange:"Change",upRemove:"Remove",
   upTooBig:"This file is larger than 10 MB. Please choose a smaller file.",upType:"Please choose an image or PDF file.",upOk:"Receipt added",
   needReceipt:"Upload your payment receipt",receiptRow:"Receipt",
   afterSend:"WhatsApp is opening. Please also attach the same receipt in the chat (📎) so we can confirm your booking.",payHow:"DuitNow QR / bank transfer",variety:"Variety",any:"Any available",
@@ -461,7 +463,7 @@ var T = {
   qrLabel:"Imbas dengan mana-mana aplikasi bank atau e-dompet Malaysia. Guna telefon? Ambil tangkapan skrin dan muat naik dalam aplikasi bank anda.",orBank:"Atau bayar melalui pindahan bank",bank:"Bank",acc:"Nombor akaun",holder:"Nama akaun",copy:"Salin",copied:"Disalin",
   ref:"Rujukan pembayaran: nama anda dan tarikh tempahan",receipt:"Jangan lupa lampirkan resit pembayaran di WhatsApp.",
   mPay:"Pembayaran: Saya akan hantar resit deposit dalam perbualan ini.",formBtn:"Hantar tempahan & muat naik resit",formNote:"Butang ini akan menyalin butiran tempahan anda dan membuka borang tempahan kami. Tampal butiran dalam borang, masukkan nombor WhatsApp anda dan muat naik resit pembayaran.",autoCopied:"✓ Butiran tempahan disalin. Tampal dalam borang (tekan lama → Tampal).",copyDetails:"Salin butiran tempahan",copiedDetails:"Butiran tempahan disalin",waAlt:"Atau hantar tempahan di WhatsApp",payment:"Pembayaran",
-  upTitle:"Muat naik resit pembayaran",upHint:"Tekan untuk pilih gambar atau PDF resit anda",upLocked:"Pilih pengalaman, tarikh dan masa dahulu, kemudian muat naik resit anda di sini.",payLocked:"Pilih pengalaman, tarikh dan masa di atas dahulu. Butiran pembayaran akan dipaparkan di sini apabila slot anda tersedia.",upMax:"Gambar atau PDF, maks. 10 MB",upChange:"Tukar",upRemove:"Buang",
+  upTitle:"Muat naik resit pembayaran",upHint:"Tekan untuk pilih gambar atau PDF resit anda",upLocked:"Pilih pengalaman, tarikh dan masa dahulu, kemudian muat naik resit anda di sini.",detailsLocked:"Pilih pengalaman, tarikh dan masa di atas dahulu, kemudian isi butiran anda.",payLocked:"Pilih pengalaman, tarikh dan masa di atas dahulu. Butiran pembayaran akan dipaparkan di sini apabila slot anda tersedia.",upMax:"Gambar atau PDF, maks. 10 MB",upChange:"Tukar",upRemove:"Buang",
   upTooBig:"Fail ini melebihi 10 MB. Sila pilih fail yang lebih kecil.",upType:"Sila pilih fail gambar atau PDF.",upOk:"Resit ditambah",
   needReceipt:"Muat naik resit pembayaran anda",receiptRow:"Resit",
   afterSend:"WhatsApp sedang dibuka. Sila lampirkan juga resit yang sama dalam perbualan (📎) supaya kami boleh mengesahkan tempahan anda.",payHow:"DuitNow QR / pindahan bank",variety:"Varieti",any:"Mana-mana yang ada",
@@ -554,7 +556,7 @@ function renderShell(){
      '<p class="events-note">'+t("eventsNote")+' <a href="https://wa.me/'+WA+'?text='+encodeURIComponent(lang==="ms"?"Salam Durian City Farm, saya ingin merancang acara.":"Hi Durian City Farm, I’d like to plan an event.")+'" target="_blank" rel="noopener">'+t("eventsLink")+'</a></p></section>'+
     '<section class="step" id="step-date"><div class="step-h"><span class="n">02</span><h2>'+t("s2")+'</h2></div><div id="cal"></div></section>'+
     '<section class="step"><div class="step-h"><span class="n">03</span><h2>'+t("s3")+'</h2></div><div class="chips" role="radiogroup" id="times"></div></section>'+
-    '<section class="step"><div class="step-h"><span class="n">04</span><h2>'+t("s4")+'</h2></div><div class="fields" id="fields"></div></section>'+
+    '<section class="step"><div class="step-h"><span class="n">04</span><h2>'+t("s4")+'</h2></div><p class="pay-lock" id="fields-lock" hidden></p><div class="fields" id="fields"></div></section>'+
     '<section class="step pay" id="pay"><div class="step-h"><span class="n">05</span><h2>'+t("s5")+'</h2></div><p class="pay-lead">'+t("payLead")+'</p>'+
      '<div class="amt" aria-live="polite"><span>'+t("amtLabel")+'</span><b id="pay-amt"></b><small id="pay-calc"></small></div>'+
      '<p class="pay-lock" id="pay-lock" hidden></p><div class="pay-grid" id="pay-grid"><figure class="qr"><img src="'+QR+'" alt="DuitNow QR for Durian City Farm Sdn. Bhd."><figcaption>'+t("qrLabel")+'</figcaption></figure>'+
@@ -697,6 +699,9 @@ function renderReceipt(){
   var pg=document.getElementById("pay-grid"), pl=document.getElementById("pay-lock");
   if (pg){ pg.classList.toggle("locked",lock); if(lock) pg.setAttribute("aria-hidden","true"); else pg.removeAttribute("aria-hidden"); var cp=document.getElementById("copy"); if(cp) cp.disabled=lock; }
   if (pl){ pl.hidden=!lock; pl.textContent=t("payLocked"); }
+  var fd=document.getElementById("fields"), fl=document.getElementById("fields-lock");
+  if (fd){ fd.classList.toggle("locked",lock); fd.inert=lock; if(lock) fd.setAttribute("aria-disabled","true"); else fd.removeAttribute("aria-disabled"); }
+  if (fl){ fl.hidden=!lock; fl.textContent=t("detailsLocked"); }
   var f=st.receipt, h='<p class="up-title">'+t("upTitle")+'</p>';
   if (!f && lock){
     h+='<div class="drop locked" aria-disabled="true"><span class="drop-ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg></span><span class="drop-t">'+t("upLocked")+'</span><small>'+t("upMax")+'</small></div>';
