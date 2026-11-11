@@ -149,3 +149,10 @@ test("farm page is a plain home-screen shortcut with the farm icon", async () =>
   assert.match(await (await fetch(base + "/farm-sw.js")).text(), /unregister/);
   assert.equal((await fetch(base + "/farm")).headers.get("cache-control"), "no-cache");
 });
+
+test("/records shows the farm page, not cached", async () => {
+  const r = await fetch(base + "/records");
+  assert.equal(r.status, 200);
+  assert.equal(r.headers.get("cache-control"), "no-cache");
+  assert.ok((await r.text()).includes("script.google.com/macros/s/"));
+});
