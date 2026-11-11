@@ -153,4 +153,6 @@ test("farm page is installable (manifest, icons, service worker)", async () => {
   const sw = await fetch(base + "/farm-sw.js");
   assert.equal(sw.status, 200);
   assert.match(sw.headers.get("content-type"), /javascript/);
+  assert.match(await sw.text(), /respondWith/);
+  assert.equal((await fetch(base + "/farm")).headers.get("cache-control"), "no-cache");
 });

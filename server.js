@@ -419,6 +419,10 @@ app.post("/api/admin/availability", requireAdmin, (req, res) => {
 app.use("/api", (req, res) => res.status(404).json({ ok: false, error: "not_found" }));
 
 /* ---------- static site ---------- */
+/* the installable farm app must always load fresh (no 1-hour browser cache) */
+const FARM_APP_FILES = new Set(["/farm", "/farm.html", "/farm.webmanifest", "/farm-sw.js"]);
+app.use((req, res, next) => { if (FARM_APP_FILES.has(req.path) || (req.hostname === "farm.duriancityfarm.com" && req.path === "/")) res.set("Cache-Control", "no-cache"); next(); });
+
 /* farm.duriancityfarm.com shows only the farm records dashboard (public/farm.html) */
 const FARM_HOST = "farm.duriancityfarm.com";
 app.use((req, res, next) => {
