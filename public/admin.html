@@ -99,7 +99,7 @@ select option{background:#2A1F18}
       <div class="row"><input type="date" id="dayDate"><button class="btn" id="addFull">Mark fully booked</button><button class="btn" id="addClosed">Mark closed</button></div>
       <p class="hint">Fully booked</p><div class="chips" id="fullList"></div>
       <p class="hint" style="margin-top:.8rem">Closed</p><div class="chips" id="closedList"></div></div>
-    <div class="panel"><h3>Close time slots</h3>
+    <div class="panel"><h3>Close time slots</h3><p class="hint">Pick a date, then tap a time to close it (orange). Changes save automatically.</p>
       <div class="row"><input type="date" id="slotDate"></div><div class="chips" id="slotBtns"></div>
       <p class="hint" style="margin-top:.8rem">Dates with closed slots</p><div class="chips" id="slotList"></div></div>
     <div class="save-bar"><button class="btn primary" id="saveAvail">Save availability</button><span class="saved" id="savedMsg"></span></div>
@@ -163,22 +163,41 @@ function renderAvail(){
   var a=S.avail; if(!a) return;
   $("prods").innerHTML=Object.keys(S.products).map(function(k){ return '<button class="tg" data-p="'+k+'" aria-pressed="'+(a.productsOff.indexOf(k)<0)+'">'+esc(S.products[k].name)+'</button>'; }).join("")+
     S.varieties.map(function(v){ return '<button class="tg" data-v="'+esc(v)+'" aria-pressed="'+(a.varietiesOff.indexOf(v)<0)+'">'+esc(v)+'</button>'; }).join("");
-  $("prods").querySelectorAll(".tg").forEach(function(b){ b.onclick=function(){ toggle(b.dataset.p?a.productsOff:a.varietiesOff, b.dataset.p||b.dataset.v); renderAvail(); }; });
-  $("openFrom").value=a.openFrom; $("openFrom").onchange=function(){ a.openFrom=this.value; };
+  $("prods").querySelectorAll(".tg").forEach(function(b){ b.onclick=function(){ toggle(b.dataset.p?a.productsOff:a.varietiesOff, b.dataset.p||b.dataset.v); renderAvail(); queueSave(); }; });
+  $("openFrom").value=a.openFrom; $("openFrom").onchange=function(){ if(!this.value) return; a.openFrom=this.value; queueSave(); };
   $("months").innerHTML=MONTHS.map(function(m,i){ return '<button class="mchip" data-i="'+i+'" aria-pressed="'+(a.seasonMonths.indexOf(i)>-1)+'">'+m+'</button>'; }).join("");
-  $("months").querySelectorAll(".mchip").forEach(function(b){ b.onclick=function(){ toggle(a.seasonMonths,+b.dataset.i); a.seasonMonths.sort(function(x,y){return x-y;}); renderAvail(); }; });
+  $("months").querySelectorAll(".mchip").forEach(function(b){ b.onclick=function(){ toggle(a.seasonMonths,+b.dataset.i); a.seasonMonths.sort(function(x,y){return x-y;}); renderAvail(); queueSave(); }; });
   function list(arr,kind){ return arr.slice().sort().map(function(d){ return '<span class="mk">'+fmt(d)+'<button data-kind="'+kind+'" data-d="'+d+'" aria-label="Remove">×</button></span>'; }).join("")||'<span class="hint">None</span>'; }
   $("fullList").innerHTML=list(a.full,"full"); $("closedList").innerHTML=list(a.closed,"closed");
   $("slotList").innerHTML=Object.keys(a.slotsOff).sort().map(function(d){ return '<span class="mk">'+fmt(d)+' · '+a.slotsOff[d].map(function(i){return S.slots[i];}).join(", ")+'<button data-kind="slots" data-d="'+d+'" aria-label="Remove">×</button></span>'; }).join("")||'<span class="hint">None</span>';
-  document.querySelectorAll(".mk button").forEach(function(b){ b.onclick=function(){ if(b.dataset.kind==="slots") delete a.slotsOff[b.dataset.d]; else toggle(a[b.dataset.kind],b.dataset.d); renderAvail(); }; });
+  document.querySelectorAll(".mk button").forEach(function(b){ b.onclick=function(){ if(b.dataset.kind==="slots") delete a.slotsOff[b.dataset.d]; else toggle(a[b.dataset.kind],b.dataset.d); renderAvail(); queueSave(); }; });
   var sd=$("slotDate").value, off=a.slotsOff[sd]||[];
   $("slotBtns").innerHTML=sd?S.slots.map(function(l,i){ var c=off.indexOf(i)>-1; return '<button class="slot" data-i="'+i+'" aria-pressed="'+c+'">'+l+' · '+(c?"closed":"open")+'</button>'; }).join(""):'<span class="hint">Choose a date to open or close its time slots.</span>';
-  $("slotBtns").querySelectorAll(".slot").forEach(function(b){ b.onclick=function(){ var arr=a.slotsOff[sd]||[]; toggle(arr,+b.dataset.i); arr.sort(); if(arr.length) a.slotsOff[sd]=arr; else delete a.slotsOff[sd]; renderAvail(); }; });
+  $("slotBtns").querySelectorAll(".slot").forEach(function(b){ b.onclick=function(){ var arr=a.slotsOff[sd]||[]; toggle(arr,+b.dataset.i); arr.sort(); if(arr.length) a.slotsOff[sd]=arr; else delete a.slotsOff[sd]; renderAvail(); queueSave(); }; });
 }
 $("slotDate").onchange=renderAvail;
-$("addFull").onclick=function(){ var d=$("dayDate").value; if(!d) return; var a=S.avail; a.closed=a.closed.filter(function(x){return x!==d;}); if(a.full.indexOf(d)<0) a.full.push(d); renderAvail(); };
-$("addClosed").onclick=function(){ var d=$("dayDate").value; if(!d) return; var a=S.avail; a.full=a.full.filter(function(x){return x!==d;}); if(a.closed.indexOf(d)<0) a.closed.push(d); renderAvail(); };
-$("saveAvail").onclick=function(){ api("/api/admin/availability",{method:"POST",body:JSON.stringify(S.avail)}).then(function(j){ if(j.ok){ S.avail=j.availability; renderAvail(); $("savedMsg").textContent="Saved. Visitors see the update straight away."; setTimeout(function(){ $("savedMsg").textContent=""; },3000); } }); };
+$("addFull").onclick=function(){ var d=$("dayDate").value; if(!d) return; var a=S.avail; a.closed=a.closed.filter(function(x){return x!==d;}); if(a.full.indexOf(d)<0) a.full.push(d); renderAvail(); queueSave(); };
+$("addClosed").onclick=function(){ var d=$("dayDate").value; if(!d) return; var a=S.avail; a.full=a.full.filter(function(x){return x!==d;}); if(a.closed.indexOf(d)<0) a.closed.push(d); renderAvail(); queueSave(); };
+/* Auto-save: every change on the Availability tab is saved straight away. */
+var saveTimer=null, saving=false, again=false, dirty=false;
+function msg(t,c){ var m=$("savedMsg"); m.textContent=t; m.style.color=c||""; }
+function queueSave(){ dirty=true; msg("Saving…","var(--muted)"); clearTimeout(saveTimer); saveTimer=setTimeout(saveNow,400); }
+function saveNow(){
+  clearTimeout(saveTimer);
+  if(saving){ again=true; return; }
+  saving=true; again=false; dirty=false;
+  api("/api/admin/availability",{method:"POST",body:JSON.stringify(S.avail)}).then(function(j){
+    saving=false;
+    if(!j.ok) throw new Error("save");
+    if(again||dirty){ saveNow(); return; }
+    msg("Saved ✓ Visitors see the update straight away.");
+  }).catch(function(e){
+    saving=false; dirty=true;
+    msg(e&&e.message==="login" ? "Not saved: you were logged out. Log in again and redo the change." : "Not saved: check your internet connection, then tap Save availability.","var(--bad)");
+  });
+}
+$("saveAvail").onclick=saveNow;
+window.addEventListener("beforeunload",function(e){ if(dirty||saving){ e.preventDefault(); e.returnValue=""; } });
 
 fetch("/api/admin/me",{credentials:"same-origin"}).then(function(r){ if(r.ok) showApp(); else showLogin(); }).catch(showLogin);
 })();

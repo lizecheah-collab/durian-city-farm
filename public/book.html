@@ -220,6 +220,7 @@ button{font:inherit;color:inherit}
 .up-err{color:var(--warn);font-size:.85rem;margin:.6rem 0 0}
 .sent-note{margin:.8rem 0 0;font-size:.85rem;color:var(--brass-soft);background:rgba(180,140,87,.12);border-radius:8px;padding:.7rem .8rem}
 .chip:disabled{opacity:.35;cursor:not-allowed;text-decoration:line-through}
+.chip.nodate:disabled{opacity:.5;text-decoration:none}
 /* experience cards with photos */
 .opt{flex-direction:column;gap:0;padding:0;overflow:hidden}
 .opt-img{display:block;width:100%;aspect-ratio:16/9;overflow:hidden;background:var(--night-2)}
@@ -641,8 +642,8 @@ function renderTimes(){
   if (st.date && st.time!==null && !slotOpen(st.date,st.time)) st.time=null;
   el.innerHTML=t("slots").map(function(x,i){
     var blocked = st.date && slotBlocked(st.date,i);
-    var shut = st.date && !slotOpen(st.date,i);
-    return '<button type="button" class="chip'+(blocked?' blocked':'')+'" role="radio" aria-checked="'+(st.time===i)+'" data-t="'+i+'"'+(shut?' disabled title="'+(blocked?t("fullSlot"):t("slotClosed"))+'"':'')+'>'+x+(blocked?' · '+t("fullSlot"):'')+'</button>';
+    var shut = !st.date || !slotOpen(st.date,i);
+    return '<button type="button" class="chip'+(blocked?' blocked':'')+(!st.date?' nodate':'')+'" role="radio" aria-checked="'+(st.time===i)+'" data-t="'+i+'"'+(shut?' disabled title="'+(!st.date?t("needDate"):blocked?t("fullSlot"):t("slotClosed"))+'"':'')+'>'+x+(blocked?' · '+t("fullSlot"):'')+'</button>';
   }).join("")+'<p class="slot-note">'+t("lastSlot")+' '+t("lead24")+'</p>';
   el.querySelectorAll(".chip").forEach(function(b){ b.onclick=function(){ if(b.disabled) return; st.time=+b.dataset.t; renderTimes(); renderSummary(); }; });
 }
@@ -928,6 +929,9 @@ function applyHash(){
 applyHash();
 renderAll();
 loadAvailability();
+/* Pick up admin changes while the page is open: on return to the tab and every 2 minutes. */
+document.addEventListener("visibilitychange",function(){ if(!document.hidden) loadAvailability(); });
+setInterval(function(){ if(!document.hidden) loadAvailability(); },120000);
 window.addEventListener("hashchange",function(){ applyHash(); renderAll(); });
 
 if (window.claude && typeof window.claude.use==="function"){
