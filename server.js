@@ -437,10 +437,23 @@ app.use(express.static(PUBLIC_DIR, { extensions: ["html"], maxAge: "1h" }));
 app.use((req, res) => res.status(404).sendFile(path.join(PUBLIC_DIR, "index.html")));
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`Durian City Farm running on http://localhost:${PORT}`);
     if (!ADMIN_PASSWORD) console.warn("ADMIN_PASSWORD is not set: the admin page will refuse to log in.");
   });
+  /* Railway stops the old copy with SIGTERM on every deploy. Finish open requests, close the database and exit 0,
+     so the replaced deployment is not reported (and emailed) as "crashed". */
+  let stopping = false;
+  const stop = (sig) => {
+    if (stopping) return;
+    stopping = true;
+    console.log(`${sig} received: shutting down cleanly`);
+    setTimeout(() => process.exit(0), 8000).unref();
+    server.close(() => { try { db.close(); } catch (e) {} process.exit(0); });
+    if (server.closeIdleConnections) server.closeIdleConnections();
+  };
+  process.on("SIGTERM", () => stop("SIGTERM"));
+  process.on("SIGINT", () => stop("SIGINT"));
 }
 
 module.exports = { app, checkBooking, sanitizeAvailability, DEFAULT_AVAILABILITY };
