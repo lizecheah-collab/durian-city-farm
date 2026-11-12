@@ -14,17 +14,32 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <style>
   html, body { margin: 0; height: 100%; background: #1F1712; }
-  iframe { display: block; width: 100%; height: 100vh; height: 100dvh; border: 0; }
+  iframe { display: block; width: 100%; height: 100vh; height: 100dvh; border: 0; position: relative; z-index: 1; opacity: 0; transition: opacity .25s; }
+  iframe.ready { opacity: 1; }
+  /* shown at once while Google loads the dashboard */
+  #loader { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; color: #B9AA97; font: 300 15px/1.4 "Jost", "Century Gothic", system-ui, sans-serif; }
+  #loader img { width: 88px; height: 88px; border-radius: 50%; }
+  #loader .bar { width: 120px; height: 3px; border-radius: 3px; background: rgba(239,230,216,.12); overflow: hidden; }
+  #loader .bar::after { content: ""; display: block; width: 40%; height: 100%; background: #B48C57; border-radius: 3px; animation: slide 1.1s ease-in-out infinite; }
+  @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
   noscript, .fallback { color: #EFE6D8; font: 16px/1.5 system-ui, sans-serif; padding: 1.5rem; display: block; }
   .fallback a { color: #B48C57; }
 </style>
 </head>
 <body>
 <!-- Farm records dashboard (Google Apps Script web app). The app itself lives in the DCF Apps Script project bound to the "Up to Date - Flowering" sheet. -->
-<iframe src="https://script.google.com/macros/s/AKfycbxr7o2cQI8lcbdGRs0OtaCxl07vj8FUJl1fcjjVde3ZCr85j5hdfKI4mavQd1ZRXAQL/exec"
+<div id="loader" role="status"><img src="/icons/farm-icon-192.png" alt=""><span>Loading farm records…</span><div class="bar"></div></div>
+<iframe id="app" src="https://script.google.com/macros/s/AKfycbxr7o2cQI8lcbdGRs0OtaCxl07vj8FUJl1fcjjVde3ZCr85j5hdfKI4mavQd1ZRXAQL/exec"
         title="Durian City Farm – farm records" allow="clipboard-write"></iframe>
 <noscript>Farm records need JavaScript. <a href="https://script.google.com/macros/s/AKfycbxr7o2cQI8lcbdGRs0OtaCxl07vj8FUJl1fcjjVde3ZCr85j5hdfKI4mavQd1ZRXAQL/exec">Open them directly</a>.</noscript>
 <script>
+  // show the dashboard once Google has loaded it (a short pause lets its inner page paint), or after 12 s at the latest
+  (function () {
+    var f = document.getElementById('app'), shown = false;
+    function show() { if (shown) return; shown = true; f.className = 'ready'; setTimeout(function () { var l = document.getElementById('loader'); if (l) l.style.display = 'none'; }, 300); }
+    f.addEventListener('load', function () { setTimeout(show, 400); });
+    setTimeout(show, 12000);
+  })();
   // /farm is a plain home-screen shortcut (like class.pinetreelearninghub.com), not an installed app:
   // remove the app helper that earlier versions registered on phones.
   if ('serviceWorker' in navigator) navigator.serviceWorker.getRegistrations().then(function (rs) { rs.forEach(function (r) { if (r.scope.indexOf("/farm") !== -1) r.unregister(); }); }).catch(function () {});
