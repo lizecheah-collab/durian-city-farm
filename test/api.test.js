@@ -8,6 +8,7 @@ const path = require("node:path");
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "dcf-test-"));
 process.env.DATA_DIR = tmp;
 process.env.ADMIN_PASSWORD = "test-password";
+process.env.FARM_FEED_KEY = "test-feed-key";
 process.env.RESEND_API_KEY = "re_test";
 process.env.NOTIFY_EMAIL = "farm@example.com";
 /* Capture Resend calls instead of sending real email. */
@@ -155,4 +156,24 @@ test("/records shows the farm page, not cached", async () => {
   assert.equal(r.status, 200);
   assert.equal(r.headers.get("cache-control"), "no-cache");
   assert.ok((await r.text()).includes("script.google.com/macros/s/"));
+});
+
+test("farm feed: key required, lists only upcoming confirmed bookings without phone numbers", async () => {
+  assert.equal((await fetch(base + "/api/farm/bookings")).status, 401);
+  assert.equal((await fetch(base + "/api/farm/bookings", { headers: { "X-Farm-Key": "wrong" } })).status, 401);
+  const r = await fetch(base + "/api/farm/bookings", { headers: { "X-Farm-Key": "test-feed-key" } });
+  assert.equal(r.status, 200);
+  const j = await r.json();
+  assert.ok(Array.isArray(j.bookings));
+  const lr = await admin("/api/admin/login", { method: "POST", body: JSON.stringify({ password: "test-password" }) });
+  cookie = lr.headers.get("set-cookie").split(";")[0];
+  const pending = (await (await admin("/api/admin/bookings?status=all")).json()).bookings;
+  if (pending[0]) await admin("/api/admin/bookings/" + pending[0].ref, { method: "POST", body: JSON.stringify({ status: "confirmed" }) });
+  const all = (await (await admin("/api/admin/bookings?status=all")).json()).bookings;
+  const j2 = await (await fetch(base + "/api/farm/bookings", { headers: { "X-Farm-Key": "test-feed-key" } })).json();
+  const today = new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
+  const want = all.filter((b) => b.status === "confirmed" && b.date >= today).map((b) => b.ref).sort();
+  assert.deepEqual(j2.bookings.map((b) => b.ref).sort(), want);
+  if (pending[0] && pending[0].date >= today) assert.ok(j2.bookings.length >= 1, "a confirmed upcoming booking is listed");
+  for (const b of j2.bookings) { assert.ok(!("phone" in b)); assert.ok(b.time && b.type && b.pax >= 1); }
 });

@@ -416,6 +416,22 @@ app.post("/api/admin/availability", requireAdmin, (req, res) => {
   res.json({ ok: true, availability: a });
 });
 
+/* ---------- private feed for the farm records dashboard (Google Apps Script) ----------
+   Upcoming CONFIRMED bookings (deposit checked in admin), so they show under "Upcoming events".
+   Needs header X-Farm-Key = FARM_FEED_KEY. No phone numbers, receipts or private notes. */
+const FARM_FEED_KEY = process.env.FARM_FEED_KEY || "";
+app.get("/api/farm/bookings", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  if (!FARM_FEED_KEY) return res.status(503).json({ ok: false, error: "feed_not_configured" });
+  if (limited("farmfeed", req.ip, 120, 3600e3)) return res.status(429).json({ ok: false, error: "rate_limited" });
+  if (!safeEqual(req.get("x-farm-key") || "", FARM_FEED_KEY)) return res.status(401).json({ ok: false, error: "unauthorized" });
+  const rows = db.prepare("SELECT ref, experience, date, slot, name, people, variety, kg FROM bookings WHERE status = 'confirmed' AND date >= ? ORDER BY date, slot").all(todayMY());
+  res.json({ ok: true, bookings: rows.map((b) => ({
+    ref: b.ref, date: b.date, time: SLOT_LABELS[b.slot] || "", type: (PRODUCTS[b.experience] && PRODUCTS[b.experience].name) || b.experience,
+    pax: b.people, name: b.name, details: [b.variety, b.kg ? b.kg + " kg" : ""].filter(Boolean).join(" · ")
+  })) });
+});
+
 app.use("/api", (req, res) => res.status(404).json({ ok: false, error: "not_found" }));
 
 /* ---------- static site ---------- */
