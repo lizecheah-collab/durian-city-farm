@@ -453,6 +453,8 @@ app.use((req, res, next) => {
 require("./site-pages").mount(app);
 /* Photos have content-hashed names, so browsers can keep them for a year */
 app.use("/img", express.static(path.join(PUBLIC_DIR, "img"), { maxAge: "365d", immutable: true, fallthrough: true }));
+/* Self-hosted web fonts (Crimson Pro, Jost, Quicksand; SIL Open Font License) */
+app.use("/fonts", express.static(path.join(PUBLIC_DIR, "fonts"), { maxAge: "30d", fallthrough: true }));
 app.use(express.static(PUBLIC_DIR, { extensions: ["html"], maxAge: "1h" }));
 app.use((req, res) => res.status(404).sendFile(path.join(PUBLIC_DIR, "index.html")));
 
