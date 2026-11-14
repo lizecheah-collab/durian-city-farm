@@ -11,7 +11,7 @@
 <meta name="description" content="Host corporate events, celebrations and private durian gatherings at Durian City Farm, Johor Bahru, or book a durian party at your office.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@300;400&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@300;400&display=swap"></noscript>
 
 
 <style>
@@ -557,6 +557,16 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 .cta-band .actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
 @media (prefers-reduced-motion:reduce){.tcard>img{transition:none}}
 </style>
+<style id="perf-phone">
+/* Phones and touch screens: drop the costly background blur, keep the look with a slightly more solid colour */
+@media (max-width:900px),(hover:none){
+  .top{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.97)}
+  .glass{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(48,36,28,.82)}
+  .impression{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.78)}
+}
+/* Images with width/height attributes keep their aspect ratio while loading, without overriding sizes set in CSS */
+:where(img[width][height]){height:auto}
+</style>
 </head>
 <body class="page page-events">
 
@@ -572,7 +582,7 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 
 <header class="top">
   <div class="wrap">
-    <a href="./#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
+    <a href="./#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
     <ul id="menu">
       <li><a href="./#home">Home</a></li>
       <li><a href="./#overview">About</a></li>
@@ -620,15 +630,15 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
       </div>
     </div>
     <div class="ev-gallery farm-gal">
-      <figure class="g1"><img src="/img/fa3276201c9d.webp" alt="Friends under a fruiting durian tree at Durian City Farm" loading="lazy"></figure>
-      <figure class="g2"><img src="/img/e0ced96f55a3.webp" alt="A family with durians under the trees at Durian City Farm" loading="lazy"></figure>
-      <figure class="g3"><img src="/img/086a637964db.webp" alt="A group visit on the hill at Durian City Farm" loading="lazy"></figure>
+      <figure class="g1"><img width="900" height="840" decoding="async" srcset="/img/fa3276201c9d-640.webp 640w, /img/fa3276201c9d.webp 900w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/fa3276201c9d.webp" alt="Friends under a fruiting durian tree at Durian City Farm" loading="lazy"></figure>
+      <figure class="g2"><img width="900" height="1200" decoding="async" srcset="/img/e0ced96f55a3-640.webp 640w, /img/e0ced96f55a3.webp 900w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/e0ced96f55a3.webp" alt="A family with durians under the trees at Durian City Farm" loading="lazy"></figure>
+      <figure class="g3"><img width="900" height="744" decoding="async" srcset="/img/086a637964db-640.webp 640w, /img/086a637964db.webp 900w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/086a637964db.webp" alt="A group visit on the hill at Durian City Farm" loading="lazy"></figure>
     </div>
     <p class="ev-caption">Group visits and celebrations at the farm.</p>
     <div class="ev-gallery">
-      <figure class="g1"><img src="/img/1366d667e0ee.webp" alt="Guests enjoying Durian City Farm durians at a corporate durian event" loading="lazy"></figure>
-      <figure class="g2"><img src="/img/a8c085103ca9.webp" alt="Durian City Farm Black Thorn durians on display at an event" loading="lazy"></figure>
-      <figure class="g3"><img src="/img/db74a748f165.webp" alt="Tables of durians set up for a durian event" loading="lazy"></figure>
+      <figure class="g1"><img width="1000" height="1333" decoding="async" srcset="/img/1366d667e0ee-640.webp 640w, /img/1366d667e0ee.webp 1000w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/1366d667e0ee.webp" alt="Guests enjoying Durian City Farm durians at a corporate durian event" loading="lazy"></figure>
+      <figure class="g2"><img width="900" height="1200" decoding="async" srcset="/img/a8c085103ca9-640.webp 640w, /img/a8c085103ca9.webp 900w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/a8c085103ca9.webp" alt="Durian City Farm Black Thorn durians on display at an event" loading="lazy"></figure>
+      <figure class="g3"><img width="900" height="1200" decoding="async" srcset="/img/db74a748f165-640.webp 640w, /img/db74a748f165.webp 900w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/db74a748f165.webp" alt="Tables of durians set up for a durian event" loading="lazy"></figure>
     </div>
     <p class="ev-caption">A Durian City Farm durian party at a corporate office.</p>
     <div class="steps">
@@ -647,7 +657,7 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 
 <footer>
   <div class="wrap">
-    <a href="./#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
+    <a href="./#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
     <small>WhatsApp <a class="wa" data-msg="general" href="#" style="color:inherit">+60 14-909 5633</a> · © <span id="yr"></span> · Bandar Seri Alam, Johor Bahru</small>
     <nav class="soc-icons" aria-label="Durian City Farm online">
       <a class="wa" data-msg="general" href="#" aria-label="WhatsApp"><svg aria-hidden="true"><use href="#wa"/></svg></a>

@@ -11,7 +11,7 @@
 <meta name="description" content="Visit Durian City Farm in Bandar Seri Alam, Johor Bahru. Taste our Black Thorn durian, walk around the farm, learn how durian is grown and host your event at the farm. Visits by appointment.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@300;400&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@300;400&display=swap"></noscript>
 
 
 <style>
@@ -680,6 +680,16 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 .cta-band .actions{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center}
 @media (prefers-reduced-motion:reduce){.tcard>img{transition:none}}
 </style>
+<style id="perf-phone">
+/* Phones and touch screens: drop the costly background blur, keep the look with a slightly more solid colour */
+@media (max-width:900px),(hover:none){
+  .top{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.97)}
+  .glass{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(48,36,28,.82)}
+  .impression{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.78)}
+}
+/* Images with width/height attributes keep their aspect ratio while loading, without overriding sizes set in CSS */
+:where(img[width][height]){height:auto}
+</style>
 </head>
 <body>
 
@@ -695,7 +705,7 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 
 <header class="top">
   <div class="wrap">
-    <a href="#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
+    <a href="#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
     <ul id="menu">
       <li><a href="#home">Home</a></li>
       <li><a href="#overview">About</a></li>
@@ -718,9 +728,9 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 </header>
 
 <section class="hero" id="home">
-  <div class="photo hero-photo" aria-hidden="true"><img src="/img/2ac5d1ffce71.webp" alt="Opened Black Thorn durians in a basket at Durian City Farm, Johor Bahru"></div>
+  <div class="photo hero-photo" aria-hidden="true"><img fetchpriority="high" width="960" height="1280" decoding="async" srcset="/img/2ac5d1ffce71-640.webp 640w, /img/2ac5d1ffce71.webp 960w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/2ac5d1ffce71.webp" alt="Opened Black Thorn durians in a basket at Durian City Farm, Johor Bahru"></div>
   <div class="wrap">
-    <div class="badge"><img src="/img/01eba67aaf9b.webp" alt="Durian City Farm logo"></div>
+    <div class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt="Durian City Farm logo"></div>
     <h1>Where luxury meets nature</h1>
     <p class="sub">Durian City Farm, a durian farm in Johor Bahru where you can slow down and reconnect with nature.</p>
     <ul class="pills" aria-label="What we offer">
@@ -747,14 +757,14 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
       <div><b>84</b><span>Reviews</span></div>
     </div>
   </div>
-  <div class="photo"><img src="/img/624d6182075e.webp" alt="Freshly harvested durians on display at Durian City Farm" loading="lazy"></div>
+  <div class="photo"><img width="1100" height="968" decoding="async" srcset="/img/624d6182075e-640.webp 640w, /img/624d6182075e.webp 1100w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/624d6182075e.webp" alt="Freshly harvested durians on display at Durian City Farm" loading="lazy"></div>
 </section>
 
 <section class="feature" id="durian" aria-label="Our durian: Black Thorn">
   <div class="tab-row"><span class="eyebrow tab">Our durian</span></div>
   <p class="ghost" aria-hidden="true">Black Thorn</p>
   <div class="stage">
-    <div class="hero-obj"><div class="badge"><img src="/img/01eba67aaf9b.webp" alt="Durian City Farm"></div></div>
+    <div class="hero-obj"><div class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt="Durian City Farm"></div></div>
     <div class="glass spec"><b>D200</b><p>Our signature variety, grown with organic fertilisers and picked from our own trees in season. <a class="wa" data-msg="durian" href="#">Ask what’s in season</a></p></div>
     <div class="glass notes">
       <span class="n">N° 01 · Signature durian</span>
@@ -794,17 +804,17 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
       <p>Every visit is by appointment, so the farm is ready for you when you arrive. Combine experiences to suit your group and the season.</p>
     </div>
     <div class="mosaic">
-      <a class="tile t-a photo wa unavailable" data-prod="buffet" data-href="book.html" data-offmsg="buffet" data-msg="buffet" href="#"><img src="/img/29871dfb79b0.webp" alt="Durians served in a basket at Durian City Farm" loading="lazy"><span class="eyebrow"><span class="st-on">Opened fresh for you</span><span class="st-off">Currently unavailable</span></span><h3>Durian Buffet</h3><p><span class="st-on">Our signature durians, opened fresh for you at the farm.</span><span class="st-off">Our durian buffet is not available at the moment. Ask us on WhatsApp to hear when it returns.</span></p><span class="go"><span class="st-on">Book the buffet</span><span class="st-off">Ask when it’s back</span></span></a>
-      <a class="tile t-b photo" data-prod="tour" data-href="book.html#tour" data-offmsg="tourback" href="book.html#tour"><img src="/img/d03ec4555c06.webp" alt="A visitor among the rows of durian trees at Durian City Farm" loading="lazy"><span class="eyebrow"><span class="st-on">Includes durian tasting</span><span class="st-off">Currently unavailable</span></span><h3>Farm Tour</h3><p><span class="st-on">See the trees up close on a tour guided by our team, then taste our durian at the farm.</span><span class="st-off">Our farm tours are not available at the moment. Ask us on WhatsApp to hear when they return.</span></p><span class="go"><span class="st-on">Book a farm tour</span><span class="st-off">Ask when it’s back</span></span></a>
-      <a class="tile t-c photo wa unavailable" data-prod="learning" data-href="book.html" data-offmsg="learnback" data-msg="learnback" href="#"><img src="/img/777b3ce1193d.webp" alt="A group of visitors with durians at Durian City Farm" loading="lazy"><span class="eyebrow"><span class="st-on">Learn how durian is grown</span><span class="st-off">Currently unavailable</span></span><h3>Farm Learning</h3><p><span class="st-on">Soil health, irrigation, organic fertilisers and sustainable farming.</span><span class="st-off">Our farm learning visits are not available at the moment. Ask us on WhatsApp to hear when they return.</span></p><span class="go"><span class="st-on">Book farm learning</span><span class="st-off">Ask when it’s back</span></span></a>
-      <a class="tile t-d photo" data-prod="durian" data-href="book.html" data-offmsg="durianback" href="book.html"><img src="/img/81879af84d0f.webp" alt="Close-up of golden durian flesh" loading="lazy"><span class="eyebrow"><span class="st-on"><span class="st-both">Dine in or take away</span><span class="st-dine">Dine in at the farm</span><span class="st-take">Take away</span></span><span class="st-off">Currently unavailable</span></span><h3>Fresh Durian</h3><p><span class="st-on">Buy our durians straight from the farm. Enjoy them here at the farm, or take them home.</span><span class="st-off">Our durians are not available at the moment. Ask us on WhatsApp to hear when they’re back.</span></p><span class="go"><span class="st-on">Book durian</span><span class="st-off">Ask when it’s back</span></span></a>
+      <a class="tile t-a photo wa unavailable" data-prod="buffet" data-href="book.html" data-offmsg="buffet" data-msg="buffet" href="#"><img width="960" height="1280" decoding="async" srcset="/img/29871dfb79b0-640.webp 640w, /img/29871dfb79b0.webp 960w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/29871dfb79b0.webp" alt="Durians served in a basket at Durian City Farm" loading="lazy"><span class="eyebrow"><span class="st-on">Opened fresh for you</span><span class="st-off">Currently unavailable</span></span><h3>Durian Buffet</h3><p><span class="st-on">Our signature durians, opened fresh for you at the farm.</span><span class="st-off">Our durian buffet is not available at the moment. Ask us on WhatsApp to hear when it returns.</span></p><span class="go"><span class="st-on">Book the buffet</span><span class="st-off">Ask when it’s back</span></span></a>
+      <a class="tile t-b photo" data-prod="tour" data-href="book.html#tour" data-offmsg="tourback" href="book.html#tour"><img width="1000" height="800" decoding="async" srcset="/img/d03ec4555c06-640.webp 640w, /img/d03ec4555c06.webp 1000w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/d03ec4555c06.webp" alt="A visitor among the rows of durian trees at Durian City Farm" loading="lazy"><span class="eyebrow"><span class="st-on">Includes durian tasting</span><span class="st-off">Currently unavailable</span></span><h3>Farm Tour</h3><p><span class="st-on">See the trees up close on a tour guided by our team, then taste our durian at the farm.</span><span class="st-off">Our farm tours are not available at the moment. Ask us on WhatsApp to hear when they return.</span></p><span class="go"><span class="st-on">Book a farm tour</span><span class="st-off">Ask when it’s back</span></span></a>
+      <a class="tile t-c photo wa unavailable" data-prod="learning" data-href="book.html" data-offmsg="learnback" data-msg="learnback" href="#"><img width="1100" height="684" decoding="async" srcset="/img/777b3ce1193d-640.webp 640w, /img/777b3ce1193d.webp 1100w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/777b3ce1193d.webp" alt="A group of visitors with durians at Durian City Farm" loading="lazy"><span class="eyebrow"><span class="st-on">Learn how durian is grown</span><span class="st-off">Currently unavailable</span></span><h3>Farm Learning</h3><p><span class="st-on">Soil health, irrigation, organic fertilisers and sustainable farming.</span><span class="st-off">Our farm learning visits are not available at the moment. Ask us on WhatsApp to hear when they return.</span></p><span class="go"><span class="st-on">Book farm learning</span><span class="st-off">Ask when it’s back</span></span></a>
+      <a class="tile t-d photo" data-prod="durian" data-href="book.html" data-offmsg="durianback" href="book.html"><img width="1400" height="868" decoding="async" srcset="/img/81879af84d0f-640.webp 640w, /img/81879af84d0f-1024.webp 1024w, /img/81879af84d0f.webp 1400w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/81879af84d0f.webp" alt="Close-up of golden durian flesh" loading="lazy"><span class="eyebrow"><span class="st-on"><span class="st-both">Dine in or take away</span><span class="st-dine">Dine in at the farm</span><span class="st-take">Take away</span></span><span class="st-off">Currently unavailable</span></span><h3>Fresh Durian</h3><p><span class="st-on">Buy our durians straight from the farm. Enjoy them here at the farm, or take them home.</span><span class="st-off">Our durians are not available at the moment. Ask us on WhatsApp to hear when they’re back.</span></p><span class="go"><span class="st-on">Book durian</span><span class="st-off">Ask when it’s back</span></span></a>
     </div>
   </section>
 </div>
 
 <div class="light">
   <section class="wrap story" id="farm">
-    <div class="photo"><img src="/img/3907c3c001ca.webp" alt="Rows of durian trees at Durian City Farm, with Johor Bahru city in the distance" loading="lazy"></div>
+    <div class="photo"><img width="1280" height="960" decoding="async" srcset="/img/3907c3c001ca-640.webp 640w, /img/3907c3c001ca-1024.webp 1024w, /img/3907c3c001ca.webp 1280w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/3907c3c001ca.webp" alt="Rows of durian trees at Durian City Farm, with Johor Bahru city in the distance" loading="lazy"></div>
     <div class="text">
       <span class="eyebrow tab">The farm</span>
       <h2>Rows of durian trees, with the city on the horizon.</h2>
@@ -841,9 +851,9 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
       <p>Plan an event, see what’s coming next, or work with us.</p>
     </div>
     <div class="tgrid">
-      <a class="tcard" href="events.html"><img src="/img/fa3276201c9d.webp" alt="Visitors holding fresh durians under a durian tree at Durian City Farm" loading="lazy"><span class="tc-body"><span class="eyebrow">Events</span><h3>Events &amp; durian parties</h3><p>Host your occasion at the farm, or we bring the durian party to your office.</p><span class="go">See events</span></span></a>
-      <a class="tcard" href="retreat.html"><img src="/img/ef7e486d8281.webp" alt="Durian City Farm Retreat cabin among the trees (coming soon)" loading="lazy"><span class="tc-body"><span class="eyebrow">Retreat · coming soon</span><h3>Durian City Farm Retreat</h3><p>Stay overnight among the durian trees. Register your interest.</p><span class="go">Learn more</span></span></a>
-      <a class="tcard" href="partner.html"><img src="/img/3907c3c001ca.webp" alt="Rows of durian trees at Durian City Farm with the Johor Bahru skyline" loading="lazy"><span class="tc-body"><span class="eyebrow">Partner with us</span><h3>Collaborate or join our team</h3><p>We’re open to partnerships and welcome people who’d like to join us.</p><span class="go">Work with us</span></span></a>
+      <a class="tcard" href="events.html"><img width="900" height="840" decoding="async" srcset="/img/fa3276201c9d-640.webp 640w, /img/fa3276201c9d.webp 900w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/fa3276201c9d.webp" alt="Visitors holding fresh durians under a durian tree at Durian City Farm" loading="lazy"><span class="tc-body"><span class="eyebrow">Events</span><h3>Events &amp; durian parties</h3><p>Host your occasion at the farm, or we bring the durian party to your office.</p><span class="go">See events</span></span></a>
+      <a class="tcard" href="retreat.html"><img width="1300" height="975" decoding="async" srcset="/img/ef7e486d8281-640.webp 640w, /img/ef7e486d8281-1024.webp 1024w, /img/ef7e486d8281.webp 1300w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/ef7e486d8281.webp" alt="Durian City Farm Retreat cabin among the trees (coming soon)" loading="lazy"><span class="tc-body"><span class="eyebrow">Retreat · coming soon</span><h3>Durian City Farm Retreat</h3><p>Stay overnight among the durian trees. Register your interest.</p><span class="go">Learn more</span></span></a>
+      <a class="tcard" href="partner.html"><img width="1280" height="960" decoding="async" srcset="/img/3907c3c001ca-640.webp 640w, /img/3907c3c001ca-1024.webp 1024w, /img/3907c3c001ca.webp 1280w" sizes="(max-width: 760px) 92vw, (max-width: 1200px) 60vw, 800px" src="/img/3907c3c001ca.webp" alt="Rows of durian trees at Durian City Farm with the Johor Bahru skyline" loading="lazy"><span class="tc-body"><span class="eyebrow">Partner with us</span><h3>Collaborate or join our team</h3><p>We’re open to partnerships and welcome people who’d like to join us.</p><span class="go">Work with us</span></span></a>
     </div>
     <p class="faq-link">Have a question? <a href="faq.html">Read our FAQ</a></p>
   </section>
@@ -885,7 +895,7 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
   <div class="wrap grid">
     <div>
       <span class="eyebrow tab">Visit</span>
-      <div class="badge"><img src="/img/01eba67aaf9b.webp" alt="Durian City Farm"></div>
+      <div class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt="Durian City Farm"></div>
       <h2>Visit us</h2>
       <p class="lead">All visits are by appointment. Message us with your date and group size and we’ll prepare for your arrival. Mobile signal can be limited near the farm, so ask us for a location pin to the entrance.</p>
       <div class="actions">
@@ -911,7 +921,7 @@ section.wrap.reviews,section.wrap.teasers,section.wrap.faq,section.wrap.story,se
 
 <footer>
   <div class="wrap">
-    <a href="#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
+    <a href="#home" class="brand" aria-label="Durian City Farm home"><span class="badge"><img width="560" height="449" decoding="async" src="/img/01eba67aaf9b.webp" alt=""></span><span class="brand-text"><span class="bn">Durian City Farm</span><span class="tag">Where luxury meets nature</span></span></a>
     <small>WhatsApp <a class="wa" data-msg="general" href="#" style="color:inherit">+60 14-909 5633</a> · © <span id="yr"></span> · Bandar Seri Alam, Johor Bahru</small>
     <nav class="soc-icons" aria-label="Durian City Farm online">
       <a class="wa" data-msg="general" href="#" aria-label="WhatsApp"><svg aria-hidden="true"><use href="#wa"/></svg></a>

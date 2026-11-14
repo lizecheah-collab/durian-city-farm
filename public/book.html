@@ -11,7 +11,7 @@
 <meta name="description" content="Book a farm tour with durian tasting, buy durian for dine in or take away, or arrange a farm learning visit at Durian City Farm, Bandar Seri Alam, Johor Bahru.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@400&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@400&display=swap"></noscript>
 <style id="dcf-css">:root{
   --night:#1F1712;--night-2:#2A1F18;--walnut:#3B2C22;--brown:#523F31;
   --brass:#B48C57;--brass-soft:#D7B27A;--cream:#EFE6D8;--cream-muted:#B9AA97;
@@ -358,6 +358,16 @@ button.send[aria-busy="true"]{background:var(--brass);color:var(--night);opacity
 .done p{font-size:.92rem}
 .done .send{margin:1rem 0 .6rem}
 </style>
+<style id="perf-phone">
+/* Phones and touch screens: drop the costly background blur, keep the look with a slightly more solid colour */
+@media (max-width:900px),(hover:none){
+  .top{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.97)}
+  .glass{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(48,36,28,.82)}
+  .impression{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.78)}
+}
+/* Images with width/height attributes keep their aspect ratio while loading, without overriding sizes set in CSS */
+:where(img[width][height]){height:auto}
+</style>
 </head>
 <body>
 <div id="app"><!--lang:en--><main class="wrap" style="padding:2rem 1.25rem;max-width:760px;margin:0 auto">
@@ -399,7 +409,7 @@ button.send[aria-busy="true"]{background:var(--brass);color:var(--night);opacity
 <meta name="description" content="Book a farm tour with durian tasting, buy durian for dine in or take away, or arrange a farm learning visit at Durian City Farm, Bandar Seri Alam, Johor Bahru.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@400&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@400&display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Jost:wght@300;400;500&family=Quicksand:wght@400&display=swap"></noscript>
 </script>
 <script type="text/plain" id="dcf-logo">/img/01eba67aaf9b.webp</script>
 <script type="text/plain" id="dcf-qr">/img/7a9e8bc2f9e4.webp</script>
