@@ -22,6 +22,7 @@ const { DatabaseSync } = require("node:sqlite");
 const express = require("express");
 const multer = require("multer");
 const cookieParser = require("cookie-parser");
+const compression = require("compression");
 
 /* ---------- config ---------- */
 const PORT = Number(process.env.PORT) || 3000;
@@ -241,8 +242,12 @@ app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  /* Browsers remember to use HTTPS for a year (only sent over HTTPS, i.e. on the live site) */
+  if (req.secure) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   next();
 });
+/* gzip/deflate text responses (HTML, CSS, JS, JSON, XML, txt); images and fonts are already compressed */
+app.use(compression({ threshold: 1024 }));
 app.use(cookieParser());
 app.use("/api", express.json({ limit: "200kb" }));
 

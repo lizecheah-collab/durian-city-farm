@@ -98,3 +98,17 @@ test("Photos are served as cacheable files", async () => {
   assert.match(r.headers.get("cache-control"), /max-age=31536000/);
   assert.equal((await get("/img/og-durian-city-farm.jpg")).status, 200);
 });
+
+test("Text responses are compressed; images are not", async () => {
+  const page = await new Promise((r) => http.get({ host: "127.0.0.1", port, path: "/", headers: { "Accept-Encoding": "gzip" } }, r));
+  assert.equal(page.headers["content-encoding"], "gzip");
+  page.resume();
+  const api = await new Promise((r) => http.get({ host: "127.0.0.1", port, path: "/sitemap.xml", headers: { "Accept-Encoding": "gzip" } }, r));
+  assert.equal(api.headers["content-encoding"], "gzip");
+  api.resume();
+  const h = await (await get("/")).text();
+  const src = h.match(/src="(\/img\/[0-9a-f]{12}\.webp)"/)[1];
+  const img = await new Promise((r) => http.get({ host: "127.0.0.1", port, path: src, headers: { "Accept-Encoding": "gzip" } }, r));
+  assert.equal(img.headers["content-encoding"], undefined);
+  img.resume();
+});
