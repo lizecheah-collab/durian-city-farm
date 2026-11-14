@@ -449,6 +449,10 @@ app.use((req, res, next) => {
   if (req.path === "/" || req.path === "/farm" || req.path === "/farm.html") return res.sendFile(path.join(PUBLIC_DIR, "farm.html"));
   return res.redirect(302, "/");
 });
+/* Public pages (English + /ms/ Malay), canonical/hreflang/Open Graph tags, robots.txt, sitemap.xml, redirects */
+require("./site-pages").mount(app);
+/* Photos have content-hashed names, so browsers can keep them for a year */
+app.use("/img", express.static(path.join(PUBLIC_DIR, "img"), { maxAge: "365d", immutable: true, fallthrough: true }));
 app.use(express.static(PUBLIC_DIR, { extensions: ["html"], maxAge: "1h" }));
 app.use((req, res) => res.status(404).sendFile(path.join(PUBLIC_DIR, "index.html")));
 
