@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <title>Book your visit | Durian City Farm</title>
@@ -357,6 +358,8 @@ button.send[aria-busy="true"]{background:var(--brass);color:var(--night);opacity
 .done .send{margin:1rem 0 .6rem}
 </style>
 <style id="perf-phone">
+/* Language buttons: at least 24px tall for comfortable tapping */
+.lang button{min-height:24px}
 /* Phones and touch screens: drop the costly background blur, keep the look with a slightly more solid colour */
 @media (max-width:900px),(hover:none){
   .top{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:rgba(31,23,18,.97)}
