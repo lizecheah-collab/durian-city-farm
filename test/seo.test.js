@@ -84,6 +84,12 @@ test("Duplicate addresses redirect to one URL", async () => {
   assert.equal(res.statusCode, 301);
   assert.equal(res.headers.location, "https://www.duriancityfarm.com/faq.html");
   res.resume();
+  for (const p of ["/robots.txt", "/sitemap.xml", "/llms.txt", "/book.html?x=1", "/"]) {
+    const bare = await new Promise((r) => http.get({ host: "127.0.0.1", port, path: p, headers: { Host: "duriancityfarm.com" } }, r));
+    assert.equal(bare.statusCode, 301, "bare domain " + p);
+    assert.equal(bare.headers.location, "https://www.duriancityfarm.com" + p);
+    bare.resume();
+  }
   const api = await new Promise((r) => http.get({ host: "127.0.0.1", port, path: "/api/availability", headers: { Host: "web-production-c0ecc.up.railway.app" } }, r));
   assert.equal(api.statusCode, 200, "API still works on the Railway address");
   api.resume();

@@ -186,10 +186,11 @@ Sitemap: ${ORIGIN}/sitemap.xml
 
 /* Mount on an Express app, before express.static. */
 function mount(app) {
-  /* One address per page: Railway's default domain and /index.html, /events (no .html) redirect. */
+  /* One address per page: Railway's default domain, the bare domain (no www), /index.html and /events (no .html) redirect. */
+  const otherHost = (h) => /\.up\.railway\.app$/i.test(h) || /^duriancityfarm\.com$/i.test(h);
   app.use((req, res, next) => {
     if (req.method !== "GET" && req.method !== "HEAD") return next();
-    if (/\.up\.railway\.app$/i.test(req.hostname) && !req.path.startsWith("/api/") && req.path !== "/healthz")
+    if (otherHost(req.hostname) && !req.path.startsWith("/api/") && req.path !== "/healthz")
       return res.redirect(301, ORIGIN + req.originalUrl);
     next();
   });
