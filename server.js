@@ -39,6 +39,11 @@ const RESEND_API_KEY = process.env.RESEND_API_KEY || "";
 const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL || "";
 const MAIL_FROM = process.env.MAIL_FROM || "Durian City Farm <onboarding@resend.dev>";
 const SITE_URL = (process.env.SITE_URL || "https://www.duriancityfarm.com").replace(/\/+$/, "");
+/* Bookings admin lives on its own subdomain. ADMIN_URL (e.g. https://admin.duriancityfarm.com) turns on
+   the redirect from the old www…/admin address and is used in the new-booking emails. */
+const ADMIN_HOST = "admin.duriancityfarm.com";
+const ADMIN_URL = (process.env.ADMIN_URL || "").replace(/\/+$/, "");
+const ADMIN_LINK = ADMIN_URL ? ADMIN_URL + "/" : SITE_URL + "/admin.html";
 
 /* Must match book.html */
 const SLOT_HOURS = [9, 11, 13, 15, 17];
@@ -199,8 +204,8 @@ async function notifyNewBooking(bk, receiptPath, receiptName) {
       `<p>New booking received. Please check the deposit receipt (attached) and confirm it in the admin page.</p>` +
       `<table cellpadding="6" style="border-collapse:collapse;font-family:sans-serif;font-size:14px">` +
       rows.map(([k, v]) => `<tr><td style="color:#6E6052">${htmlEsc(k)}</td><td><b>${htmlEsc(v)}</b></td></tr>`).join("") +
-      `</table><p><a href="${SITE_URL}/admin.html">Open bookings admin</a></p>`;
-    const text = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\nAdmin: ${SITE_URL}/admin.html`;
+      `</table><p><a href="${ADMIN_LINK}">Open bookings admin</a></p>`;
+    const text = rows.map(([k, v]) => `${k}: ${v}`).join("\n") + `\n\nAdmin: ${ADMIN_LINK}`;
     const attachments = [];
     try {
       const buf = await fs.promises.readFile(receiptPath);
@@ -446,6 +451,23 @@ app.use((req, res, next) => { if (FARM_APP_FILES.has(req.path) || (req.hostname 
 
 /* /records = same farm page under a fresh address (for phones stuck on an old "DCF Farm" install of /farm) */
 app.get("/records", (req, res) => res.sendFile(path.join(PUBLIC_DIR, "farm.html")));
+
+/* admin.duriancityfarm.com shows only the bookings admin (public/admin.html) and its icons/fonts; never indexed */
+app.use((req, res, next) => {
+  if (req.hostname === ADMIN_HOST) {
+    res.set("X-Robots-Tag", "noindex, nofollow");
+    if (req.path === "/robots.txt") return res.type("text/plain").send("User-agent: *\nDisallow: /\n");
+    if (req.path === "/" || req.path === "/admin" || req.path === "/admin.html") {
+      res.set("Cache-Control", "no-cache");
+      return res.sendFile(path.join(PUBLIC_DIR, "admin.html"));
+    }
+    if (/^\/(fonts|img|icons)\//.test(req.path) || /^\/(favicon[\w.-]*|apple-touch-icon\.png|icon-\d+\.png|site\.webmanifest)$/.test(req.path)) return next();
+    return res.redirect(302, "/");
+  }
+  // old address → the admin subdomain (only once ADMIN_URL is set, i.e. the subdomain is live)
+  if (ADMIN_URL && (req.method === "GET" || req.method === "HEAD") && (req.path === "/admin" || req.path === "/admin.html")) return res.redirect(301, ADMIN_URL + "/");
+  next();
+});
 
 /* farm.duriancityfarm.com shows only the farm records dashboard (public/farm.html) */
 const FARM_HOST = "farm.duriancityfarm.com";

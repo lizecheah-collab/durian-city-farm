@@ -130,6 +130,23 @@ test("logout ends session", async () => {
   assert.equal((await admin("/api/admin/me")).status, 401);
 });
 
+test("admin.duriancityfarm.com serves only the bookings admin, never indexed", async () => {
+  const h = { "X-Forwarded-Host": "admin.duriancityfarm.com" };
+  const home = await fetch(base + "/", { headers: h });
+  assert.equal(home.status, 200);
+  assert.match(await home.text(), /Bookings admin/);
+  assert.match(home.headers.get("x-robots-tag") || "", /noindex/);
+  const other = await fetch(base + "/book.html", { headers: h, redirect: "manual" });
+  assert.equal(other.status, 302);
+  assert.equal(other.headers.get("location"), "/");
+  assert.equal((await fetch(base + "/favicon.ico", { headers: h, redirect: "manual" })).status, 200);
+  assert.match(await (await fetch(base + "/robots.txt", { headers: h })).text(), /Disallow: \//);
+  const me = await fetch(base + "/api/admin/me", { headers: h });
+  assert.equal(me.status, 401); // the admin API works on the subdomain (not logged in here)
+  // without ADMIN_URL the old www address still serves the admin page
+  assert.equal((await fetch(base + "/admin.html", { redirect: "manual" })).status, 200);
+});
+
 test("farm.duriancityfarm.com serves the farm records page", async () => {
   const farm = await fetch(base + "/", { headers: { "X-Forwarded-Host": "farm.duriancityfarm.com" } });
   assert.equal(farm.status, 200);
