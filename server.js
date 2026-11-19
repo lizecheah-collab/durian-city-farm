@@ -427,7 +427,8 @@ app.post("/api/admin/availability", requireAdmin, (req, res) => {
 });
 
 /* ---------- private feed for the farm records dashboard (Google Apps Script) ----------
-   Upcoming CONFIRMED bookings (deposit checked in admin), so they show under "Upcoming events".
+   CONFIRMED (deposit checked in admin) and COMPLETED bookings from 12 months ago onward, so they show under
+   "Upcoming events" and "Past events".
    Needs header X-Farm-Key = FARM_FEED_KEY. No phone numbers, receipts or private notes. */
 const FARM_FEED_KEY = process.env.FARM_FEED_KEY || "";
 app.get("/api/farm/bookings", (req, res) => {
@@ -435,10 +436,11 @@ app.get("/api/farm/bookings", (req, res) => {
   if (!FARM_FEED_KEY) return res.status(503).json({ ok: false, error: "feed_not_configured" });
   if (limited("farmfeed", req.ip, 120, 3600e3)) return res.status(429).json({ ok: false, error: "rate_limited" });
   if (!safeEqual(req.get("x-farm-key") || "", FARM_FEED_KEY)) return res.status(401).json({ ok: false, error: "unauthorized" });
-  const rows = db.prepare("SELECT ref, experience, date, slot, name, people, variety, kg FROM bookings WHERE status = 'confirmed' AND date >= ? ORDER BY date, slot").all(todayMY());
+  const from = new Date(Date.parse(todayMY() + "T00:00:00Z") - 365 * 864e5).toISOString().slice(0, 10);
+  const rows = db.prepare("SELECT ref, experience, date, slot, name, people, variety, kg, status FROM bookings WHERE status IN ('confirmed', 'completed') AND date >= ? ORDER BY date, slot").all(from);
   res.json({ ok: true, bookings: rows.map((b) => ({
     ref: b.ref, date: b.date, time: SLOT_LABELS[b.slot] || "", type: (PRODUCTS[b.experience] && PRODUCTS[b.experience].name) || b.experience,
-    pax: b.people, name: b.name, details: [b.variety, b.kg ? b.kg + " kg" : ""].filter(Boolean).join(" · ")
+    pax: b.people, name: b.name, status: b.status, details: [b.variety, b.kg ? b.kg + " kg" : ""].filter(Boolean).join(" · ")
   })) });
 });
 

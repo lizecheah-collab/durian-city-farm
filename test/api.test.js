@@ -175,7 +175,7 @@ test("/records shows the farm page, not cached", async () => {
   assert.ok((await r.text()).includes("script.google.com/macros/s/"));
 });
 
-test("farm feed: key required, lists only upcoming confirmed bookings without phone numbers", async () => {
+test("farm feed: key required, lists confirmed/completed bookings from the last 12 months without phone numbers", async () => {
   assert.equal((await fetch(base + "/api/farm/bookings")).status, 401);
   assert.equal((await fetch(base + "/api/farm/bookings", { headers: { "X-Farm-Key": "wrong" } })).status, 401);
   const r = await fetch(base + "/api/farm/bookings", { headers: { "X-Farm-Key": "test-feed-key" } });
@@ -189,8 +189,9 @@ test("farm feed: key required, lists only upcoming confirmed bookings without ph
   const all = (await (await admin("/api/admin/bookings?status=all")).json()).bookings;
   const j2 = await (await fetch(base + "/api/farm/bookings", { headers: { "X-Farm-Key": "test-feed-key" } })).json();
   const today = new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10);
-  const want = all.filter((b) => b.status === "confirmed" && b.date >= today).map((b) => b.ref).sort();
+  const from = new Date(Date.parse(today + "T00:00:00Z") - 365 * 864e5).toISOString().slice(0, 10);
+  const want = all.filter((b) => (b.status === "confirmed" || b.status === "completed") && b.date >= from).map((b) => b.ref).sort();
   assert.deepEqual(j2.bookings.map((b) => b.ref).sort(), want);
   if (pending[0] && pending[0].date >= today) assert.ok(j2.bookings.length >= 1, "a confirmed upcoming booking is listed");
-  for (const b of j2.bookings) { assert.ok(!("phone" in b)); assert.ok(b.time && b.type && b.pax >= 1); }
+  for (const b of j2.bookings) { assert.ok(!("phone" in b)); assert.ok(b.time && b.type && b.pax >= 1); assert.ok(["confirmed", "completed"].includes(b.status)); }
 });
