@@ -32,28 +32,28 @@ const BY_FILE = Object.fromEntries(PAGES);
 
 const META_MS = {
   "index.html": {
-    title: "Durian City Farm | Kebun Durian & Agro-Pelancongan di Johor Bahru",
-    desc: "Lawati Durian City Farm di Bandar Seri Alam, Johor Bahru. Rasa durian Black Thorn kami, jelajah kebun, belajar cara durian ditanam dan adakan acara anda di kebun. Lawatan melalui temu janji.",
+    title: "Durian City Farm, Masai | Ladang Durian di Johor Bahru",
+    desc: "Ladang durian (dusun durian) di Bandar Seri Alam, Masai, Johor Bahru. Lawatan kebun dengan rasa durian, beli durian Black Thorn segar untuk makan di sini atau bungkus, dan parti durian. Tempah dalam talian.",
   },
   "book.html": {
-    title: "Tempah lawatan anda | Durian City Farm",
-    desc: "Tempah lawatan kebun dengan rasa durian, beli durian untuk makan di kebun atau bungkus, atau atur lawatan pembelajaran di Durian City Farm, Bandar Seri Alam, Johor Bahru.",
+    title: "Tempah Lawatan Ladang Durian & Rasa Durian | Durian City Farm",
+    desc: "Tempah dalam talian: lawatan ladang durian dengan rasa durian, atau beli durian segar untuk makan di sini atau bungkus di Durian City Farm, Bandar Seri Alam, Masai, Johor Bahru. Slot 9 pagi hingga 5 petang.",
   },
   "events.html": {
-    title: "Acara & Parti Durian | Durian City Farm",
-    desc: "Adakan acara korporat, sambutan dan majlis durian peribadi di Durian City Farm, Johor Bahru, atau tempah parti durian di pejabat anda.",
+    title: "Parti Durian & Acara | Durian City Farm, Johor Bahru",
+    desc: "Adakan acara korporat, sambutan dan parti durian peribadi di Durian City Farm, Masai, Johor Bahru, atau tempah parti durian di pejabat anda.",
   },
   "retreat.html": {
     title: "Durian City Farm Retreat (Akan Datang) | Durian City Farm",
-    desc: "Durian City Farm Retreat akan datang: bermalam di antara pokok durian di Bandar Seri Alam, Johor Bahru. Daftar minat anda.",
+    desc: "Durian City Farm Retreat akan datang: bermalam di antara pokok durian di Bandar Seri Alam, Masai, Johor Bahru. Daftar minat anda.",
   },
   "partner.html": {
     title: "Kerjasama Dengan Kami | Durian City Farm",
     desc: "Durian City Farm terbuka untuk kerjasama dengan rakan pelancongan, korporat, pendidikan, F&B dan media, serta mengalu-alukan sesiapa yang ingin menyertai pasukan kami.",
   },
   "faq.html": {
-    title: "Soalan Lazim | Durian City Farm",
-    desc: "Jawapan tentang lawatan ke Durian City Farm di Johor Bahru: musim durian, Black Thorn, lawatan kebun, deposit, masa tempahan, acara dan arah ke kebun.",
+    title: "Soalan Lazim: Musim, Waktu Buka & Tempahan | Durian City Farm",
+    desc: "Durian City Farm di Masai, Johor Bahru: musim durian, waktu buka dan slot lawatan, beli durian, lawatan ladang, deposit, acara dan arah ke ladang.",
   },
 };
 

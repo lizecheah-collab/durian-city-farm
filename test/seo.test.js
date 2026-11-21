@@ -48,7 +48,7 @@ test("English pages have canonical, hreflang, Open Graph and a single H1", async
 test("Malay pages are translated in the HTML", async () => {
   const h = await html("/ms/");
   assert.match(h, /<html lang="ms"/);
-  assert.match(h, /<title>Durian City Farm \| Kebun Durian/);
+  assert.match(h, /<title>Durian City Farm, Masai \| Ladang Durian/);
   assert.ok(h.includes("Pengalaman"), "nav translated");
   assert.ok(h.includes('<link rel="canonical" href="https://www.duriancityfarm.com/ms/">'));
   const faq = await html("/ms/faq.html");
